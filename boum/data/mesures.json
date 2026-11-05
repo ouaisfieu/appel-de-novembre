@@ -1,0 +1,270 @@
+{
+ "objectif": 10,
+ "note": "Rendements tels que cités dans la presse pendant des négociations confidentielles (octobre-novembre 2026). Horizons différents (2027 ou 2029). Ordres de grandeur, pas un modèle budgétaire.",
+ "payeurs": {
+  "hauts": {
+   "label": "Hauts revenus et grands patrimoines",
+   "couleur": "#3987e5"
+  },
+  "transferts": {
+   "label": "Pensionné·es, allocataires, agents publics",
+   "couleur": "#d95926"
+  },
+  "patients": {
+   "label": "Patient·es et malades",
+   "couleur": "#199e70"
+  },
+  "menages": {
+   "label": "Tous les ménages (via la consommation)",
+   "couleur": "#c98500"
+  }
+ },
+ "mesures": [
+  {
+   "id": "tva",
+   "nom": "TVA : taux normal de 21 à 22 %",
+   "detail": "Avec la fusion des taux de 6 et 12 % en un taux de 9 %. Proposée par De Wever, retirée le 15 octobre face au refus du MR.",
+   "montant": 2.0,
+   "recette": true,
+   "payeur": "menages",
+   "propose": "N-VA",
+   "src": [
+    [
+     "L'Avenir, 2/11",
+     "https://www.lavenir.net/actu/belgique/politique/2026/11/02/la-demission-de-bart-de-wever-mise-en-suspens-par-le-roi-pourquoi-larizona-na-pas-encore-pousse-son-dernier-soupir-U2YWRIR2TZF6PHZYFSOC2GM62U/"
+    ],
+    [
+     "VRT, 15/10",
+     "https://www.vrt.be/vrtnws/fr/2026/10/15/budget-federal-de-wever-abandonne-la-reforme-de-la-tva-et-se-c/"
+    ]
+   ]
+  },
+  {
+   "id": "index",
+   "nom": "« Bouton d'urgence » : pas d'indexation en 2027",
+   "detail": "Concerne les pensions, les allocations, les salaires de la fonction publique, les budgets de fonctionnement et les barèmes fiscaux. Ne pas indexer les barèmes revient à augmenter l'impôt de tout le monde sans le dire.",
+   "montant": 4.0,
+   "recette": false,
+   "payeur": "transferts",
+   "propose": "N-VA",
+   "src": [
+    [
+     "L'Avenir, 16/10",
+     "https://www.lavenir.net/actu/belgique/politique/2026/10/16/budget-federal-le-gouvernement-de-wever-reprend-ses-travaux-ce-samedi-matin-sur-le-bouton-durgence-PO5V3ODTGBCDVBWIWPWXJT7FBA/"
+    ]
+   ]
+  },
+  {
+   "id": "sante",
+   "nom": "Paquet soins de santé",
+   "detail": "Consultation de 1-4 € à 5-10 €, remboursement de certains médicaments limité, prestations non indexées, statut BIM durci, norme de croissance réduite. Le montant cité est « plus de 3 milliards ».",
+   "montant": 3.0,
+   "recette": false,
+   "payeur": "patients",
+   "propose": "N-VA",
+   "src": [
+    [
+     "DH, 21/10",
+     "https://www.dhnet.be/actu/belgique/2026/10/21/faute-daccord-sur-son-budget-larizona-plonge-encore-un-peu-plus-dans-la-crise-voici-les-mesures-sur-la-table-des-negociations-JH7JKBJC25GKBHRPL2XB7B72PE/"
+    ],
+    [
+     "L'Avenir, 2/11",
+     "https://www.lavenir.net/actu/belgique/politique/2026/11/02/la-demission-de-bart-de-wever-mise-en-suspens-par-le-roi-pourquoi-larizona-na-pas-encore-pousse-son-dernier-soupir-U2YWRIR2TZF6PHZYFSOC2GM62U/"
+    ]
+   ]
+  },
+  {
+   "id": "lts",
+   "nom": "Malades de longue durée : tour de vis supplémentaire",
+   "detail": "Économies supplémentaires citées par Frank Vandenbroucke, qui s'y oppose.",
+   "montant": 0.8,
+   "recette": false,
+   "payeur": "patients",
+   "propose": "N-VA",
+   "src": [
+    [
+     "La Libre, 2/11",
+     "https://www.lalibre.be/belgique/politique-belge/2026/11/02/budget-federal-le-kern-ne-parvient-pas-a-degager-un-accord-bart-de-wever-va-remettre-sa-demission-au-roi-RGR57E7BQNEDXMAZTANYJWRJNI/"
+    ]
+   ]
+  },
+  {
+   "id": "pcompl",
+   "nom": "Plus grosses pensions complémentaires : taxe de 12,5 à 15 %",
+   "detail": "Une piste de contribution des « épaules les plus larges » discutée au kern.",
+   "montant": 0.5,
+   "recette": true,
+   "payeur": "hauts",
+   "propose": "Kern",
+   "src": [
+    [
+     "DH, 21/10",
+     "https://www.dhnet.be/actu/belgique/2026/10/21/faute-daccord-sur-son-budget-larizona-plonge-encore-un-peu-plus-dans-la-crise-voici-les-mesures-sur-la-table-des-negociations-JH7JKBJC25GKBHRPL2XB7B72PE/"
+    ]
+   ]
+  },
+  {
+   "id": "larges",
+   "nom": "Sociétés de management, fondations privées, résidences secondaires",
+   "detail": "Environ 1 milliard demandé aux « épaules les plus larges ». Vooruit et Les Engagés voulaient aller plus loin.",
+   "montant": 1.0,
+   "recette": true,
+   "payeur": "hauts",
+   "propose": "Vooruit, Les Engagés",
+   "src": [
+    [
+     "DH, 21/10",
+     "https://www.dhnet.be/actu/belgique/2026/10/21/faute-daccord-sur-son-budget-larizona-plonge-encore-un-peu-plus-dans-la-crise-voici-les-mesures-sur-la-table-des-negociations-JH7JKBJC25GKBHRPL2XB7B72PE/"
+    ]
+   ]
+  },
+  {
+   "id": "foot",
+   "nom": "Fin de l'avantage fiscal des footballeurs professionnels",
+   "detail": "Réclamée par Les Engagés. Selon Maxime Prévot, « certains partis » veulent maintenir l'avantage.",
+   "montant": 0.07,
+   "recette": true,
+   "payeur": "hauts",
+   "propose": "Les Engagés",
+   "src": [
+    [
+     "La Libre, 2/11",
+     "https://www.lalibre.be/belgique/politique-belge/2026/11/02/budget-federal-le-kern-ne-parvient-pas-a-degager-un-accord-bart-de-wever-va-remettre-sa-demission-au-roi-RGR57E7BQNEDXMAZTANYJWRJNI/"
+    ]
+   ]
+  },
+  {
+   "id": "fortune",
+   "nom": "Impôt sur les grandes fortunes (1 %, 2 %, 3 % au-delà de 1 M€)",
+   "detail": "Hors table de l'Arizona. Réclamé par la FGTB. On retient l'estimation basse du Bureau du Plan (4,7 Md€ par an). Une étude UCLouvain arrive à environ 10 Md€. Le rendement dépend de l'évasion.",
+   "montant": 4.7,
+   "recette": true,
+   "payeur": "hauts",
+   "propose": "FGTB (hors majorité)",
+   "src": [
+    [
+     "Regards économiques (UCLouvain)",
+     "https://www.regards-economiques.be/index.php?option=com_reco&view=article&cid=239"
+    ]
+   ]
+  },
+  {
+   "id": "bnp",
+   "nom": "Vendre des actions BNP Paribas",
+   "detail": "Rapporte environ 4,5 Md€ en une fois, mais ne réduit pas le déficit : c'est une opération financière qui diminue la dette, et l'État perd ensuite les dividendes. L'effet sur l'objectif est nul.",
+   "montant": 4.5,
+   "structurel": 0,
+   "recette": false,
+   "payeur": null,
+   "propose": "Gouvernement",
+   "src": [
+    [
+     "DH, 21/10",
+     "https://www.dhnet.be/actu/belgique/2026/10/21/faute-daccord-sur-son-budget-larizona-plonge-encore-un-peu-plus-dans-la-crise-voici-les-mesures-sur-la-table-des-negociations-JH7JKBJC25GKBHRPL2XB7B72PE/"
+    ]
+   ]
+  }
+ ],
+ "acteurs": [
+  {
+   "id": "nva",
+   "nom": "N-VA",
+   "camp": "majorite",
+   "regles": [
+    {
+     "type": "total_min",
+     "seuil": 10,
+     "raison": "« L'objectif reste inchangé » (Jan Jambon) : 10 Md€ d'ici 2029.",
+     "src": "https://www.lavenir.net/actu/belgique/politique/2026/10/16/budget-federal-le-gouvernement-de-wever-reprend-ses-travaux-ce-samedi-matin-sur-le-bouton-durgence-PO5V3ODTGBCDVBWIWPWXJT7FBA/"
+    }
+   ]
+  },
+  {
+   "id": "mr",
+   "nom": "MR",
+   "camp": "majorite",
+   "regles": [
+    {
+     "type": "any",
+     "mesures": [
+      "tva"
+     ],
+     "raison": "Refuse toute hausse de la TVA.",
+     "src": "https://www.vrt.be/vrtnws/fr/2026/10/15/budget-federal-de-wever-abandonne-la-reforme-de-la-tva-et-se-c/"
+    },
+    {
+     "type": "recettes_max",
+     "seuil": 2.0,
+     "raison": "Juge qu'il y a « trop de taxes » et voulait environ 1 Md€ de recettes en moins que la dernière offre, qui en comptait plus de 3. Seuil approximatif : 2 Md€.",
+     "src": "https://www.lavenir.net/actu/belgique/politique/2026/11/02/la-demission-de-bart-de-wever-mise-en-suspens-par-le-roi-pourquoi-larizona-na-pas-encore-pousse-son-dernier-soupir-U2YWRIR2TZF6PHZYFSOC2GM62U/"
+    }
+   ]
+  },
+  {
+   "id": "vooruit",
+   "nom": "Vooruit",
+   "camp": "majorite",
+   "regles": [
+    {
+     "type": "any",
+     "mesures": [
+      "index",
+      "sante",
+      "lts"
+     ],
+     "raison": "Rejette le gel de l'index (a boycotté une réunion technique), les coupes en santé et le tour de vis sur les malades de longue durée.",
+     "src": "https://www.dhnet.be/actu/belgique/2026/10/21/faute-daccord-sur-son-budget-larizona-plonge-encore-un-peu-plus-dans-la-crise-voici-les-mesures-sur-la-table-des-negociations-JH7JKBJC25GKBHRPL2XB7B72PE/"
+    }
+   ]
+  },
+  {
+   "id": "engages",
+   "nom": "Les Engagés",
+   "camp": "majorite",
+   "regles": [
+    {
+     "type": "any",
+     "mesures": [
+      "index",
+      "sante"
+     ],
+     "raison": "Jugent excessif l'effort de plus de 3 Md€ en santé et s'opposent fermement au budget d'urgence avec gel de l'index.",
+     "src": "https://www.lavenir.net/actu/belgique/politique/2026/11/02/la-demission-de-bart-de-wever-mise-en-suspens-par-le-roi-pourquoi-larizona-na-pas-encore-pousse-son-dernier-soupir-U2YWRIR2TZF6PHZYFSOC2GM62U/"
+    }
+   ],
+   "court": "Engagés"
+  },
+  {
+   "id": "cdv",
+   "nom": "CD&V",
+   "camp": "majorite",
+   "regles": [
+    {
+     "type": "any",
+     "mesures": [
+      "index",
+      "sante"
+     ],
+     "raison": "Opposé aux mesures en santé et juge le gel de l'index « très déséquilibré ».",
+     "src": "https://www.lavenir.net/actu/belgique/politique/2026/10/16/budget-federal-le-gouvernement-de-wever-reprend-ses-travaux-ce-samedi-matin-sur-le-bouton-durgence-PO5V3ODTGBCDVBWIWPWXJT7FBA/"
+    }
+   ]
+  },
+  {
+   "id": "fgtb",
+   "nom": "FGTB",
+   "camp": "rue",
+   "regles": [
+    {
+     "type": "any",
+     "mesures": [
+      "tva",
+      "index"
+     ],
+     "raison": "Lignes rouges : pas de hausse de la TVA, pas d'atteinte unilatérale à l'indexation.",
+     "src": "https://www.lavenir.net/actu/societe/2026/10/09/manifestation-nationale-du-9-octobre-les-syndicats-a-nouveau-dans-la-rue-vendredi-a-bruxelles-contre-la-politique-de-larizona-direct-TFUCNPOSUVEAZLV6Y2CPGEFSQ4/"
+    }
+   ]
+  }
+ ]
+}

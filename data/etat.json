@@ -1,0 +1,87 @@
+{
+  "maj": "2026-11-05T14:00:00+01:00",
+  "titre": "Gouvernement démissionnaire en suspens",
+  "resume": "Le 2 novembre 2026, faute d'accord budgétaire, Bart De Wever a remis la démission de son gouvernement au Roi, qui l'a tenue en suspens. Le Roi a consulté les cinq présidents de parti de la majorité Arizona du 3 au 5 novembre et revoit le Premier ministre le vendredi 6 novembre à 10h30.",
+  "depuis": "2026-11-02",
+  "bandeau": "Démission De Wever en suspens · le Roi revoit le Premier ministre ce vendredi 6/11 à 10h30 · manifestation nationale en front commun le lundi 23/11",
+  "etapes": [
+    {
+      "date": "2026-11-01",
+      "label": "Dim. 1/11 · 21h",
+      "texte": "Kern de la dernière chance sur l'effort de 10 milliards d'ici 2029. Il se termine vers 1h du matin sans accord.",
+      "src": "https://www.lalibre.be/belgique/politique-belge/2026/11/02/budget-federal-le-kern-ne-parvient-pas-a-degager-un-accord-bart-de-wever-va-remettre-sa-demission-au-roi-RGR57E7BQNEDXMAZTANYJWRJNI/"
+    },
+    {
+      "date": "2026-11-02",
+      "label": "Lun. 2/11",
+      "texte": "Bart De Wever présente la démission du gouvernement. Le Palais « déplore » l'absence d'un accord « crédible et à la hauteur des défis actuels » et tient la démission en suspens.",
+      "src": "https://rtbf.be/article/crise-dans-le-gouvernement-arizona-le-kern-se-quitte-sans-accord-bart-de-wever-se-rend-chez-le-roi-11809122"
+    },
+    {
+      "date": "2026-11-03",
+      "label": "Mar. 3/11",
+      "texte": "Le Roi reçoit Yvan Verougstraete (Les Engagés), « Ce n'est pas encore fini », puis Sammy Mahdi (CD&V).",
+      "src": "https://www.rtbf.be/article/budget-et-crise-politique-une-semaine-capitale-pour-l-arizona-11809238"
+    },
+    {
+      "date": "2026-11-04",
+      "label": "Mer. 4/11",
+      "texte": "Conner Rousseau (Vooruit) : « J'ai dit au Roi que nous voulons un accord » qui soit « équitable ». Georges-Louis Bouchez (MR) ne fait aucune déclaration.",
+      "src": "https://www.dhnet.be/actu/belgique/2026/11/04/jai-dit-au-roi-que-nous-voulons-un-accord-conner-rousseau-et-georges-louis-bouchez-ont-ete-recus-par-le-souverain-ce-mercredi-RKTTXOSYXRA7JNE4M2YATVYJMY/"
+    },
+    {
+      "date": "2026-11-05",
+      "label": "Jeu. 5/11",
+      "texte": "Valerie Van Peel (N-VA) est reçue au Palais et en ressort vers 12h45 sans faire de déclaration. Yvan Verougstraete (Les Engagés) : « Tout le monde va devoir faire un pas ».",
+      "src": "https://www.lavenir.net/actu/belgique/politique/2026/11/05/crise-gouvernementale-liee-au-budget-federal-le-roi-philippe-a-recu-la-presidente-de-la-n-va-valerie-van-peel-ce-jeudi-A5OTRCSEL5G2XP4O65XKRJB6LU/"
+    },
+    {
+      "date": "2026-11-06",
+      "label": "Ven. 6/11 · 10h30",
+      "texte": "Nouvelle audience de Bart De Wever. Le Roi pourrait accepter ou refuser la démission.",
+      "src": "https://www.rtbf.be/article/budget-et-crise-politique-une-semaine-capitale-pour-l-arizona-11809238"
+    },
+    {
+      "date": "2026-12-31",
+      "label": "31/12",
+      "texte": "Sans budget 2027 voté, l'État fonctionnera en douzièmes provisoires à partir du 1er janvier 2027.",
+      "src": "https://www.lavenir.net/actu/belgique/politique/2026/11/04/larizona-en-crise-et-revoila-le-spectre-des-douziemes-provisoires-DT3DEKLKDBBGFMDA4TPBQCAD4E/"
+    }
+  ],
+  "blocages": [
+    {
+      "sujet": "Recettes",
+      "texte": "Le MR voulait 1 milliard de recettes nouvelles en moins. Vooruit en voulait environ 1 milliard de plus pour réduire les coupes, notamment dans les soins de santé."
+    },
+    {
+      "sujet": "Soins de santé",
+      "texte": "Plus de 3 milliards d'efforts demandés au secteur, une ampleur jugée excessive par Vooruit, Les Engagés et le CD&V. Frank Vandenbroucke pointe aussi plus de 800 millions d'économies supplémentaires sur les malades de longue durée."
+    },
+    {
+      "sujet": "Indexation",
+      "texte": "Le « bouton d'urgence » proposé pour 2027 (non-indexation des pensions, allocations, salaires des fonctionnaires et barèmes fiscaux, soit environ 4 milliards) est rejeté par Vooruit et Les Engagés comme déséquilibré."
+    },
+    {
+      "sujet": "TVA",
+      "texte": "Passer le taux normal de 21 à 22 % aurait rapporté environ 2 milliards. La mesure a été abandonnée le 15 octobre face au refus du MR."
+    }
+  ],
+  "scenarios": [
+    {
+      "nom": "Le Roi refuse la démission",
+      "texte": "Les négociations reprennent au sein de l'Arizona, directement ou avec un médiateur."
+    },
+    {
+      "nom": "Le Roi accepte la démission",
+      "texte": "Le gouvernement passe en affaires courantes. Suivent la recherche d'une autre majorité ou des élections anticipées, dont aucun parti ne dit vouloir."
+    },
+    {
+      "nom": "« Plan B »",
+      "texte": "Un budget d'urgence 2027 sans nouvelles recettes, ou des douzièmes provisoires, en attendant un accord pluriannuel."
+    }
+  ],
+  "sources_blocages": [
+    "https://www.lavenir.net/actu/belgique/politique/2026/11/02/la-demission-de-bart-de-wever-mise-en-suspens-par-le-roi-pourquoi-larizona-na-pas-encore-pousse-son-dernier-soupir-U2YWRIR2TZF6PHZYFSOC2GM62U/",
+    "https://www.lavenir.net/actu/belgique/politique/2026/10/16/budget-federal-le-gouvernement-de-wever-reprend-ses-travaux-ce-samedi-matin-sur-le-bouton-durgence-PO5V3ODTGBCDVBWIWPWXJT7FBA/"
+  ]
+}

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ouaisfieu.github.io/appel-de-novembre/sitemap.xml

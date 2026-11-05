@@ -1,0 +1,41 @@
+[
+  {
+    "date": "2026-11-06T10:30:00+01:00",
+    "couleur": "ink",
+    "titre": "Le Roi revoit Bart De Wever",
+    "texte": "Le Roi décide d'accepter ou de refuser la démission du gouvernement Arizona, tenue en suspens depuis le 2 novembre.",
+    "lieu": "Palais royal, Bruxelles",
+    "type": "Politique",
+    "src": "https://www.rtbf.be/article/budget-et-crise-politique-une-semaine-capitale-pour-l-arizona-11809238"
+  },
+  {
+    "date": "2026-11-17T10:00:00+01:00",
+    "heure_inconnue": true,
+    "couleur": "green",
+    "titre": "Mobilisation de la jeunesse",
+    "texte": "Le 17 novembre est la Journée internationale des étudiant·es. La FEF appelle à mobiliser contre la dégradation des conditions d'étude, et la FGTB appelle à marcher « aux côtés des jeunes ». La FGTB Métal a déposé un préavis de grève pour que les travailleurs puissent y participer.",
+    "lieu": "Bruxelles",
+    "type": "Action · préavis FGTB Métal",
+    "src": "https://www.rtbf.be/article/la-fgtb-metal-depose-un-preavis-de-greve-pour-le-17-novembre-en-soutien-a-la-mobilisation-etudiante-11806745"
+  },
+  {
+    "date": "2026-11-23T10:00:00+01:00",
+    "heure_inconnue": true,
+    "couleur": "red",
+    "titre": "Manifestation nationale en front commun",
+    "texte": "FGTB, CSC et Synova appellent ensemble à une « grande mobilisation citoyenne » contre une austérité qui pèse « une fois de plus sur le dos des travailleurs », des allocataires sociaux et des services publics. Elles invitent aussi les mutualités, les associations de lutte contre la pauvreté et les mouvements de jeunesse, environnementaux, culturels et féministes.",
+    "lieu": "Bruxelles",
+    "type": "Manifestation nationale · front commun",
+    "src": "https://www.vrt.be/vrtnws/fr/2026/10/22/manifestation-nationale-en-front-commun-syndical-vendredi-23-nov/"
+  },
+  {
+    "date": "2026-12-31T23:59:00+01:00",
+    "sans_heure": true,
+    "couleur": "blue",
+    "titre": "Date limite du budget 2027",
+    "texte": "Faute de budget voté, l'État fonctionnera en douzièmes provisoires : chaque mois, il pourra dépenser un douzième des crédits du dernier budget adopté.",
+    "lieu": "Chambre des représentants",
+    "type": "Échéance",
+    "src": "https://www.lavenir.net/actu/belgique/politique/2026/11/04/larizona-en-crise-et-revoila-le-spectre-des-douziemes-provisoires-DT3DEKLKDBBGFMDA4TPBQCAD4E/"
+  }
+]
