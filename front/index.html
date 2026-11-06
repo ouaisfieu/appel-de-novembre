@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front Commun Syndical & L'Appel de Novembre - Observatoire Social Belge</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom-color: #e11d48;
+            color: #e11d48;
+            background-color: #fff1f2;
+        }
+        .day-btn.active {
+            background-color: #e11d48;
+            color: #ffffff;
+            border-color: #e11d48;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed min-h-screen flex flex-col">
+
+<!-- Chosen Palette: Slate Editorial Harmony (Background: slate-50/white, Primary: slate-900/indigo-900, Accents: rose-600/amber-600/emerald-600, Text: slate-800) -->
+<!-- Application Structure Plan: L'application est structurée en 6 sections thématiques interactives avec tableau de bord exécutif, sélecteur chronologique au jour le jour, graphiques dynamiques pour la norme salariale (loi de 1996), le contre-budget de 21,2 milliards d'euros, les conditions de carrière de la CCT 103 (hommes/femmes) et les pétitions citoyennes. Cette structure non-linéaire permet une exploration progressive des aspects socio-économiques, logistiques et juridiques du conflit, favorisant la compréhension synthétique par rapport à une lecture passive d'un rapport textuel. -->
+<!-- Visualization & Content Choices: 
+1. Norme Salariale vs Marges Patronales -> Chart.js Barres/Lignes combinées -> Visualiser l'écart entre le gel à 0.0% et les profits records de 44%.
+2. Répartition du Contre-Budget de 21.2 Mrd € -> Chart.js Camembert/Donut -> Démontrer la composition des alternatives fiscales.
+3. Évolution des conditions CCT 103 (2025-2030) -> Chart.js Barres groupées H/F -> Mettre en évidence la trajectoire d'accès aux fins de carrière et la reconnaissance des inégalités de genre.
+4. Pétition Citoyenne par Région -> Chart.js Beignet -> Montrer l'ancrage national (>47k Flandre, ~24k Wallonie).
+5. Chronologie interactive de l'Appel de Novembre -> Onglets Vanilla JS -> Permettre le filtrage sectoriel par jour (23 au 26 nov).
+6. FAQ & Cadre Légal du droit de grève -> Accordéons JS -> Fournir un accès rapide aux protections juridiques et indemnités.
+Confirming NO SVG graphics and NO Mermaid JS used. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation Supérieure -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-white shadow-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">✊</span>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight tracking-wide text-rose-500">FRONT COMMUN SYNDICAL</h1>
+                        <p class="text-xs text-slate-400">Observatoire Social • L'Appel de Novembre 2026</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-1 text-sm font-medium">
+                    <a href="#apercu" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Vue d'ensemble</a>
+                    <a href="#syndicats" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Le Trio Syndical</a>
+                    <a href="#chronologie" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Action 23-26 Nov</a>
+                    <a href="#salaires" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Loi 1996 & Salaires</a>
+                    <a href="#budget" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Contre-Budget 21.2Mrd</a>
+                    <a href="#pensions" class="px-3 py-2 rounded-md hover:bg-slate-800 text-slate-200 hover:text-white transition">Fin de Carrière</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- HERO / SECTION 1 : VUE D'ENSEMBLE & INDICATEURS CLEFS -->
+        <section id="apercu" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="max-w-3xl">
+                <span class="inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs font-semibold rounded-full uppercase tracking-wider mb-3">Analyse Macroéconomique & Sociale</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Le Front Commun face à la Coalition Arizona</h2>
+                <p class="mt-4 text-slate-600 text-lg leading-relaxed">
+                    Le modèle social belge traverse une crise majeure. Face aux réformes d'austérité budgétaire, au blocage légal des salaires à 0,0% et aux coupes prévues dans les pensions par le gouvernement de Bart De Wever, le **Front Commun Syndical** (CSC, FGTB, SYNOVA) a lancé une mobilisation d'envergure baptisée **« L'Appel de novembre »**. Cette initiative combine grève en crescendo, propositions fiscales alternatives et consultations citoyennes.
+                </p>
+            </div>
+
+            <!-- KPIs Grid -->
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-rose-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Durée Action</span>
+                    <span class="text-2xl font-black text-rose-600 mt-1 block">4 Jours</span>
+                    <span class="text-xs text-slate-500">23 au 26 Novembre</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-amber-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Norme Salariale</span>
+                    <span class="text-2xl font-black text-amber-600 mt-1 block">0,0 %</span>
+                    <span class="text-xs text-slate-500">Loi de 1996 (2025-26)</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-indigo-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Profits Patronaux</span>
+                    <span class="text-2xl font-black text-indigo-700 mt-1 block">44 %</span>
+                    <span class="text-xs text-slate-500">Marge brute historique</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-emerald-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Contre-Budget</span>
+                    <span class="text-2xl font-black text-emerald-600 mt-1 block">21,2 Mrd €</span>
+                    <span class="text-xs text-slate-500">Alternatives fiscales</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-sky-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Pétition Chambre</span>
+                    <span class="text-2xl font-black text-sky-600 mt-1 block">78 400+</span>
+                    <span class="text-xs text-slate-500">Signatures certifiées</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center hover:border-purple-300 transition">
+                    <span class="text-xs uppercase text-slate-500 font-semibold block">Fin de Carrière</span>
+                    <span class="text-2xl font-black text-purple-600 mt-1 block">55 Ans</span>
+                    <span class="text-xs text-slate-500">Métiers lourds (CNT)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2 : TRIO INTERSYNDICAL ET GENÈSE DU FRONT COMMUN -->
+        <section id="syndicats" class="space-y-6">
+            <div class="border-l-4 border-rose-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Le Front Commun Syndical : Composition et Stratégie</h2>
+                <p class="text-slate-600 mt-1">
+                    Cette section présente la structure tripartie du syndicalisme belge. En dépit de traditions philosophiques distinctes, la FGTB, la CSC et SYNOVA unissent leurs forces dans un « Front Commun » stratégique pour réinventer le rapport de force face au patronat (FEB, UNIZO, UCM) et au gouvernement.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- FGTB Card -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-red-600">FGTB</span>
+                            <span class="px-2.5 py-0.5 bg-red-100 text-red-800 text-xs font-medium rounded-full">Socialiste</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 text-base mb-2">Fédération Générale du Travail de Belgique</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Historiquement ancrée dans la tradition combative et sociale. Très forte dans les bassins industriels wallons et bruxellois, elle prône une action de terrain ferme et le recours à la grève pour instaurer un rapport de force direct.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500">
+                        <strong>Priorité :</strong> Abrogation de la loi de 1996 & Répartition égale de la valeur ajoutée.
+                    </div>
+                </div>
+
+                <!-- CSC Card -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-emerald-700">CSC</span>
+                            <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-medium rounded-full">Chrétienne</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 text-base mb-2">Confédération des Syndicats Chrétiens</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Premier syndicat du pays en nombre d'affiliés, très majoritaire en Flandre. Privilégiant traditionnellement la concertation et le dialogue, elle rejoint résolument le conflit face au blocage des négociations sur les pensions et la pénibilité.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500">
+                        <strong>Priorité :</strong> Protection des fins de carrière, justice fiscale & neutralisation du malus pension.
+                    </div>
+                </div>
+
+                <!-- SYNOVA Card -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-lg font-bold text-blue-600">SYNOVA</span>
+                            <span class="px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Libérale (ex-CGSLB)</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 text-base mb-2">Syndicat Libéral (Renouveau Mai 2026)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Positionné sur la défense des libertés individuelles, la tolérance et le pragmatisme. Il prône un dialogue constructif mais dénonce fermement le "mépris du gouvernement" à l'égard des instances paritaires du CNT.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500">
+                        <strong>Priorité :</strong> Pouvoir d'achat réel, flexibilité négociée & respect de la concertation sociale.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Systémique : Le Système de Gand & La praxis du Front Commun -->
+            <div class="bg-indigo-900 text-white rounded-xl p-6 sm:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-indigo-200">Pourquoi le Syndicalisme Belge reste-t-il si Puissant ?</h3>
+                        <p class="mt-2 text-indigo-100 text-sm leading-relaxed">
+                            Contrairement aux autres pays occidentaux où le taux de syndicalisation s'effondre, la Belgique maintient un taux d'affiliation de près de 50%. Cette exception repose sur le **« Système de Gand »**, confiant aux syndicats le paiement des allocations de chômage et la gestion des primes sectorielles.
+                        </p>
+                        <p class="mt-3 text-indigo-100 text-sm leading-relaxed">
+                            Historiquement né après la grève du siècle de 1960-1961, le **Front Commun** permet d'éviter que le patronat ou le gouvernement ne divise le mouvement ouvrier. En agissant conjointement, les trois syndicats maximisent l'impact macroéconomique et sécurisent légalement les grévistes.
+                        </p>
+                    </div>
+                    <div class="bg-indigo-800/80 p-5 rounded-lg border border-indigo-700 text-xs space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">📜</span>
+                            <div>
+                                <strong class="text-white block">Pacte Social de 1944</strong>
+                                <span class="text-indigo-200">Fondement de la concertation paritaire (CNT, CCE, Groupe des 10).</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">🔥</span>
+                            <div>
+                                <strong class="text-white block">Grèves de 1982, 2014 et 2025</strong>
+                                <span class="text-indigo-200">Précédents majeurs de mobilisations unitaires contre l'austérité budgétaire.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">🏛️</span>
+                            <div>
+                                <strong class="text-white block">Manifestation du 14 Octobre 2025</strong>
+                                <span class="text-indigo-200">140 000 personnes dans les rues de Bruxelles, préalable direct à l'Appel de Novembre.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 : CHRONOLOGIE INTERACTIVE DE "L'APPEL DE NOVEMBRE" -->
+        <section id="chronologie" class="space-y-6">
+            <div class="border-l-4 border-rose-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Chronologie & Impact de L'Appel de Novembre (23-26 Nov)</h2>
+                <p class="text-slate-600 mt-1">
+                    Explorez le déroulement au jour le jour de la stratégie de grève en crescendo. Cliquez sur chaque journée pour visualiser les secteurs perturbés, la logistique sur le terrain et le cadre légal appliqué.
+                </p>
+            </div>
+
+            <!-- Selector Buttons -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-4">
+                <button onclick="switchDay('dim23')" id="btn-dim23" class="day-btn px-4 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition active">Dimanche 23 Nov</button>
+                <button onclick="switchDay('lun24')" id="btn-lun24" class="day-btn px-4 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition">Lundi 24 Nov</button>
+                <button onclick="switchDay('mar25')" id="btn-mar25" class="day-btn px-4 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition">Mardi 25 Nov</button>
+                <button onclick="switchDay('mer26')" id="btn-mer26" class="day-btn px-4 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 transition">Mercredi 26 Nov (Apogée)</button>
+            </div>
+
+            <!-- Dynamic Content Cards for Days -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm min-h-[300px]">
+                
+                <!-- Dimanche 23 -->
+                <div id="day-dim23" class="day-content space-y-4">
+                    <div class="flex items-center space-x-3 text-rose-600 font-bold text-lg">
+                        <span>♀️ & 🚂</span>
+                        <h3>Dimanche 23 Novembre : Convergence Féministe & Amorce du Rail</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Le front commun articule l'amorce du mouvement avec la manifestation nationale <strong>« Mirabal »</strong> contre les violences faites aux femmes. Un préavis syndical spécifique couvre les travailleuses du week-end (soins, commerce). Les syndicats mettent en avant le préjudice disproportionné subi par les femmes face aux réformes des pensions.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-900 text-sm">Secteur Rail (SNCB)</h4>
+                            <p class="text-xs text-slate-600 mt-1">Début de la grève officielle de 72 heures dès 22h00. Impact immédiat sur les retours d'étudiants vers leurs kots universitaires.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-900 text-sm">Marche Mirabal (Bruxelles)</h4>
+                            <p class="text-xs text-slate-600 mt-1">Des milliers de militants syndicaux rejoignent les collectifs féministes pour dénoncer l'impact du "malus pension" sur les carrières incomplètes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lundi 24 -->
+                <div id="day-lun24" class="day-content hidden space-y-4">
+                    <div class="flex items-center space-x-3 text-rose-600 font-bold text-lg">
+                        <span>🚌 & 🚆</span>
+                        <h3>Lundi 24 Novembre : Paralysie Métodique des Transports</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Grève ciblée sur l'ensemble des réseaux de transport public ferroviaire et urbain. L'objectif est de paralyser la mobilité économique pour marquer le début de la semaine de travail.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">SNCB (Chemins de Fer)</strong>
+                            <span class="text-xs text-rose-600 font-medium">1 train IC sur 2 • 1 local sur 3</span>
+                            <p class="text-xs text-slate-500 mt-1">Trains d'heure de pointe (P) quasi totalement supprimés.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">STIB & TEC & De Lijn</strong>
+                            <span class="text-xs text-rose-600 font-medium">Réseaux fortement perturbés</span>
+                            <p class="text-xs text-slate-500 mt-1">Priorité donnée à quelques lignes majeures de métro (1, 5) à Bruxelles. En Wallonie, majorité des dépôts TEC bloqués.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Télétravail Recommandé</strong>
+                            <span class="text-xs text-slate-600 font-medium">Consigne patronale UCM/FEB</span>
+                            <p class="text-xs text-slate-500 mt-1">Les entreprises basculent massivement en distanciel pour éviter le blocage logistique.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mardi 25 -->
+                <div id="day-mar25" class="day-content hidden space-y-4">
+                    <div class="flex items-center space-x-3 text-rose-600 font-bold text-lg">
+                        <span>🏫 & 🏛️</span>
+                        <h3>Mardi 25 Novembre : Fonction Publique & Révolution des Craies</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Extension du mot d'ordre aux services publics, administrations communales, ramassage des déchets, Bpost et secteur éducatif.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Enseignement ("Révolution des Craies")</strong>
+                            <p class="text-xs text-slate-600 mt-1">Fermeture de nombreuses écoles. Les enseignants dénoncent la hausse du temps de présence et la menace sur la pension anticipée (DPPR).</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Services Communaux & Propreté</strong>
+                            <p class="text-xs text-slate-600 mt-1">Administrations fermées. À Bruxelles-Propreté, collectes sélectives annulées, déchets laissés dans les rues.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Police & Hôpitaux</strong>
+                            <p class="text-xs text-slate-600 mt-1">Service minimum dans les hôpitaux. Actions d'humeur des syndicats de police face au recul de l'attractivité des carrières.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mercredi 26 -->
+                <div id="day-mer26" class="day-content hidden space-y-4">
+                    <div class="flex items-center space-x-3 text-rose-600 font-bold text-lg">
+                        <span>✈️ & 🏭</span>
+                        <h3>Mercredi 26 Novembre : Grève Générale Interprofessionnelle</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Apogée du mouvement : paralysie totale du secteur privé et public. Piquets de grève intersyndicaux fermant l'accès aux zonings industriels, ronds-points et aéroports.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Aéroports (Zaventem & Charleroi)</strong>
+                            <span class="text-xs text-rose-700 font-bold">100% Vols Annulés</span>
+                            <p class="text-xs text-slate-500 mt-1">Fermeture totale de l'espace aérien commercial au départ et à l'arrivée (Charleroi & Brussels Airport).</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Grande Distribution & Industrie</strong>
+                            <p class="text-xs text-slate-600 mt-1">Blocage des centrales logistiques (Colruyt, Delhaize, Carrefour) et des grands sites industriels et portuaires.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <strong class="text-slate-900 text-sm block">Piquets Filtrants & Barrages</strong>
+                            <p class="text-xs text-slate-600 mt-1">Piquets intersyndicaux sur les axes stratégiques (Wallonie, Flandre, Bruxelles).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Guide des Droits des Grévistes -->
+            <div class="bg-slate-100 rounded-xl p-6 border border-slate-200 space-y-4">
+                <h3 class="font-bold text-slate-900 text-base flex items-center space-x-2">
+                    <span>🛡️</span>
+                    <span>Cadre Légal & Protections Juridiques du Gréviste en Belgique</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200">
+                        <strong class="text-slate-900 block font-semibold mb-1">Droit Constitutionnel</strong>
+                        <span>Tout travailleur a le droit de faire grève. Il n'a pas besoin de l'accord de son employeur, juste de prévenir de son absence.</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200">
+                        <strong class="text-slate-900 block font-semibold mb-1">Indemnité de Grève (~40 € / jour)</strong>
+                        <span>Versée par la caisse de résistance du syndicat (FGTB, CSC, SYNOVA) aux affiliés pour compenser la perte de salaire non taxable.</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200">
+                        <strong class="text-slate-900 block font-semibold mb-1">Interdiction d'Intérim</strong>
+                        <span>L'employeur a l'interdiction légale stricte de faire appel à des intérimaires pour remplacer du personnel gréviste.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4 : LA NORME SALARIALE & LA LOI DE 1996 -->
+        <section id="salaires" class="space-y-6">
+            <div class="border-l-4 border-rose-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Le Cadenassage des Salaires : La Loi de 1996 en Question</h2>
+                <p class="text-slate-600 mt-1">
+                    Cette section analyse l'élément déclencheur du conflit : le gel légal de la marge d'augmentation salariale à **0,0%** pour 2025-2026, imposé par le calcul technique du Conseil Central de l'Économie (CCE), alors que les bénéfices patronaux battent des records.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Data Visualization Canvas Container -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm w-full">
+                    <h3 class="font-bold text-slate-900 text-base mb-1 text-center">Norme Salariale vs Profitabilité des Entreprises</h3>
+                    <p class="text-xs text-slate-500 text-center mb-4">Comparaison entre la marge légale (0%) et les indicateurs économiques (CCE)</p>
+                    
+                    <div class="chart-container">
+                        <canvas id="chartNormeSalariale"></canvas>
+                    </div>
+                    <div class="mt-4 text-center text-xs text-slate-500">
+                        *Source des données : Rapport technique du CCE & Étude prospective Front Commun Syndical.*
+                    </div>
+                </div>
+
+                <!-- Technical Explanation & Union Counter-argument -->
+                <div class="space-y-4">
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                        <h4 class="font-bold text-amber-900 text-sm flex items-center space-x-2">
+                            <span>⚖️</span>
+                            <span>Comment le CCE arrive-t-il à 0,0 % ?</span>
+                        </h4>
+                        <ul class="mt-2 text-xs text-amber-800 space-y-1.5 font-mono">
+                            <li>+ 1,0% (Augmentation projetée en FR, ALL, PB)</li>
+                            <li>- 0,5% (Marge de sécurité légale imposée)</li>
+                            <li>- 0,5% (Correction du "handicap historique")</li>
+                            <li class="font-bold border-t border-amber-300 pt-1 text-rose-700">= 0,0 % Marge Salariale Légale Maximale</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-sm">La Contre-Expertise Syndicale</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Le Front Commun démontre que la loi de 1996 révisée en 2017 a dévoyé la réalité économique :
+                        </p>
+                        <div class="space-y-2 text-xs">
+                            <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+                                <strong class="text-slate-900 block">Mythe du Handicap Salarial :</strong>
+                                <span class="text-slate-600">En intégrant les aides d'État et le tax shift, la Belgique possède en réalité une <strong>avance de compétitivité de +2,7%</strong> sur ses voisins.</span>
+                            </div>
+                            <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+                                <strong class="text-slate-900 block">Marges Bénéficiaires Historiques (44%) :</strong>
+                                <span class="text-slate-600">Les entreprises belges enregistrent une marge brute record de 44%, très supérieure à la France ou l'Allemagne. Imposer 0% de hausse réelle relève d'une captation unilatérale du capital.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5 : LE CONTRE-BUDGET SYNDICAL ET JUSTICE FISCALE -->
+        <section id="budget" class="space-y-6">
+            <div class="border-l-4 border-rose-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Justice Fiscale : Le Contre-Budget Syndical de 21,2 Milliards €</h2>
+                <p class="text-slate-600 mt-1">
+                    Face au narratif gouvernemental affirmant qu'il n'y a « pas d'alternative » aux coupes budgétaires, le Front Commun a chiffré un programme fiscal alternatif de 14 mesures concrètes rapportant **21,2 milliards d'euros**.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Doughnut Chart : Revenue breakdown -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-base mb-1 text-center">Répartition des 21,2 Milliards € d'Alternatives Fiscales</h3>
+                    <p class="text-xs text-slate-500 text-center mb-4">Mesures proposées par le Front Commun Syndical (FGTB, CSC, SYNOVA)</p>
+                    <div class="chart-container">
+                        <canvas id="chartBudgetAlternatif"></canvas>
+                    </div>
+                </div>
+
+                <!-- Citizen Petition Focus & Flanders Anchor Chart -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full uppercase">Mobilisation Démocratique</span>
+                            <span class="text-xs text-slate-500">Seuil requis : 25 000</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Pétition Officielle au Parlement : 78 400+ Signatures</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Pour imposer ce débat au Parlement fédéral, le Front Commun a réuni plus de trois fois le nombre légal de signatures exigé. Plus de 47 000 signatures proviennent de Flandre, démontrant l'ancrage national de la contestation sociale.
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <h4 class="text-xs font-bold text-slate-700 mb-2 text-center">Répartition Régionale des Signatures de la Pétition</h4>
+                        <div class="chart-container" style="height: 200px; max-height: 220px;">
+                            <canvas id="chartPetitionRegion"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tax Proposals Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="font-bold text-slate-900 mb-1 text-sm flex items-center space-x-1">
+                        <span>🏛️</span>
+                        <span>Cadastre des Fortunes</span>
+                    </div>
+                    <p class="text-slate-600">Transparence totale sur les grands patrimoines pour instaurer un impôt progressif sur le capital.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="font-bold text-slate-900 mb-1 text-sm flex items-center space-x-1">
+                        <span>📊</span>
+                        <span>Globalisation des Revenus</span>
+                    </div>
+                    <p class="text-slate-600">Taxer de façon égale les revenus du travail et ceux du capital (dividendes, plus-values).</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="font-bold text-slate-900 mb-1 text-sm flex items-center space-x-1">
+                        <span>⚖️</span>
+                        <span>Fin des Statuts Atypiques</span>
+                    </div>
+                    <p class="text-slate-600">Lutter contre l'érosion fiscale générée par le recours abusif aux flexi-jobs et sociétés de management.</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="font-bold text-slate-900 mb-1 text-sm flex items-center space-x-1">
+                        <span>🔍</span>
+                        <span>Subventions Conditionnelles</span>
+                    </div>
+                    <p class="text-slate-600">Conditionner les aides publiques aux entreprises à des créations d'emplois durables vérifiées.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6 : FIN DE CARRIÈRE, CCT 103 ET PENSIONS -->
+        <section id="pensions" class="space-y-6">
+            <div class="border-l-4 border-rose-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Fin de Carrière & Pensions : L'Accord CCT 103 au CNT</h2>
+                <p class="text-slate-600 mt-1">
+                    L'un des fronts majeurs concerne la sauvegarde des régimes de fin de carrière (crédit-temps 4/5ème et mi-temps). Les négociation au Conseil National du Travail (CNT) ont permis d'arracher un compromis jusqu'en 2029, mais le gouvernement menace d'imposer un malus pension.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Grouped Bar Chart : Career requirements evolution -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-base mb-1 text-center">Évolution de la Condition de Carrière (CCT 103/7)</h3>
+                    <p class="text-xs text-slate-500 text-center mb-4">Années de travail requises pour accéder au crédit-temps fin de carrière (2025-2030)</p>
+                    <div class="chart-container">
+                        <canvas id="chartCCT103"></canvas>
+                    </div>
+                </div>
+
+                <!-- Explanation of CNT Compromise & Gender Dimension -->
+                <div class="space-y-4">
+                    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+                        <h3 class="font-bold text-slate-900 text-base">Victoires Paritaires Arrachées au CNT</h3>
+                        <div class="space-y-2 text-xs text-slate-600">
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 flex items-start space-x-2">
+                                <span class="text-emerald-600 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-900 block">Accès à 55 Ans Préservé pour Métiers Lourds :</strong>
+                                    <span>Période prolongée jusqu'au 30 juin 2029 pour les régimes de nuit, 35 ans de carrière ou entreprises en restructuration (CCT 180-182).</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 flex items-start space-x-2">
+                                <span class="text-emerald-600 font-bold">✓</span>
+                                <div>
+                                    <strong class="text-slate-900 block">Assimilation pour la Pension Légale :</strong>
+                                    <span>Les périodes passées en fin de carrière continuent de compter pour le calcul du montant de la pension légale.</span>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 flex items-start space-x-2">
+                                <span class="text-rose-600 font-bold">⚠️</span>
+                                <div>
+                                    <strong class="text-slate-900 block">Protection des Femmes contre le Malus :</strong>
+                                    <span>La progression de la condition de carrière intègre une transition plus douce pour les femmes afin de compenser les interruptions liées au soin de famille.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opposition Employers vs Unions Box -->
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 text-xs text-rose-900">
+                        <strong class="font-bold block mb-1">Le Danger du "Malus Pension" Government :</strong>
+                        Le gouvernement Arizona envisage d'appliquer une pénalité financière automatique sur les pensions pour toute carrière incomplète. Le Front Commun exige le retrait pur et simple de ce mécanisme punitif.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7 : RAPPORT DE FORCE ET DEBAT PATRONAL -->
+        <section id="patronat" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="border-l-4 border-slate-900 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Le Conflit sous la Loupe : Patronat vs Front Commun</h2>
+                <p class="text-slate-600 mt-1">
+                    Analyse des arguments des organisations patronales (FEB, UNIZO, UCM) face aux syndicats et retour sur les débats autour du droit de grève et du service minimum.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Patronat Side -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                    <div class="flex items-center space-x-2 text-amber-700 font-bold text-base">
+                        <span>🏢</span>
+                        <h3>Position du Patronat (FEB, UNIZO, UCM)</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside">
+                        <li><strong>Pertes Économiques Chiffrées :</strong> Des centaines de millions d'euros perdus lors des 4 jours de blocage logistique.</li>
+                        <li><strong>Critique du Droit de Grève :</strong> UNIZO qualifie l'action de « droit de détruire », estimant les PME prises en otage.</li>
+                        <li><strong>Appel au Service Minimum :</strong> Exigence de réquisitions obligatoires dans les transports (SNCB, STIB, TEC) et l'énergie pour garantir la continuité des affaires.</li>
+                    </ul>
+                </div>
+
+                <!-- Unions Side -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                    <div class="flex items-center space-x-2 text-rose-700 font-bold text-base">
+                        <span>📢</span>
+                        <h3>Réponse du Front Commun Syndical</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside">
+                        <li><strong>Sans Travail, Pas de Richesse :</strong> Rappel fondamental que la valeur ajoutée plébiscitée par la FEB est créée exclusivement par le travail.</li>
+                        <li><strong>Défense de l'OIT :</strong> Les conventions internationales de l'OIT protègent l'exercice non-bridé de l'action collective.</li>
+                        <li><strong>Refus de la Criminalisation :</strong> Opposition absolue aux interventions d'huissiers et aux condamnations pénales de grévistes pour blocage.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p class="font-semibold text-slate-300">Observatoire Social Belge • Front Commun Syndical (CSC - FGTB - SYNOVA)</p>
+            <p>Données synthétisées d'après le rapport d'analyse de la mobilisation « L'Appel de Novembre 2026 ».</p>
+            <p class="text-slate-600">Conforme aux directives d'ergonomie web et d'architecture d'information • Document interactif complet sans dépendances SVG externes.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic & Chart Initialization -->
+    <script>
+        // Day Switcher Logic for Chronology Section
+        function switchDay(dayId) {
+            // Hide all day contents
+            const contents = document.querySelectorAll('.day-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // Remove active style from all day buttons
+            const buttons = document.querySelectorAll('.day-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show target content
+            const targetContent = document.getElementById('day-' + dayId);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+
+            // Highlight target button
+            const targetBtn = document.getElementById('btn-' + dayId);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+
+        // Initialize Chart.js Graphs on DOMContentLoaded
+        document.addEventListener('DOMContentReady', function() {
+            initCharts();
+        });
+
+        // Fallback standard load listener
+        window.addEventListener('load', function() {
+            initCharts();
+        });
+
+        let chartsInitialized = false;
+        function initCharts() {
+            if (chartsInitialized) return;
+            chartsInitialized = true;
+
+            // Chart 1: Norme Salariale vs Profitabilité
+            const ctx1 = document.getElementById('chartNormeSalariale');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            'Marge Légale 25-26', 
+                            'Projections Pays Voisins', 
+                            'Avance Réelle Salariale*', 
+                            'Hausse Net Capital (10 ans)', 
+                            'Marges Brutes Entreprises'
+                        ],
+                        datasets: [{
+                            label: 'Taux / Pourcentage (%)',
+                            data: [0.0, 1.0, 2.7, 25.0, 44.0],
+                            backgroundColor: [
+                                '#e11d48', // Red for 0%
+                                '#f59e0b', // Amber
+                                '#10b981', // Emerald
+                                '#6366f1', // Indigo
+                                '#4f46e5'  // Deep Indigo
+                            ],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let val = context.raw;
+                                        return ' Valeur : ' + val + ' %';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) { return value + ' %'; }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    callback: function(val, index) {
+                                        let label = this.getLabelForValue(val);
+                                        return label.length > 16 ? label.substring(0, 14) + '..' : label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 2: Contre-Budget Alternatif (21.2 Mrd €)
+            const ctx2 = document.getElementById('chartBudgetAlternatif');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            'Cadastre Fortunes & Capital', 
+                            'Globalisation Revenus', 
+                            'Conditionnalité Subventions', 
+                            'Lutte Fraude & Statuts Atypiques'
+                        ],
+                        datasets: [{
+                            data: [7.5, 5.8, 4.4, 3.5],
+                            backgroundColor: ['#059669', '#10b981', '#34d399', '#a7f3d0'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, font: { size: 11 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ' ' + context.label + ' : ' + context.raw + ' Mrd €';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 3: Pétition Region breakdown
+            const ctx3 = document.getElementById('chartPetitionRegion');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Flandre (>47k)', 'Wallonie (~24k)', 'Bruxelles / Autre (~7.4k)'],
+                        datasets: [{
+                            data: [47000, 24000, 7400],
+                            backgroundColor: ['#f59e0b', '#e11d48', '#6366f1']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                        }
+                    }
+                });
+            }
+
+            // Chart 4: CCT 103 Career Years Progression (Men vs Women)
+            const ctx4 = document.getElementById('chartCCT103');
+            if (ctx4) {
+                new Chart(ctx4, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+                        datasets: [
+                            {
+                                label: 'Hommes (Années requises)',
+                                data: [25, 31, 32, 33, 34, 35],
+                                backgroundColor: '#4f46e5',
+                                borderRadius: 4
+                            },
+                            {
+                                label: 'Femmes (Années requises)',
+                                data: [25, 26, 27, 28, 29, 30],
+                                backgroundColor: '#e11d48',
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ' ' + context.dataset.label + ' : ' + context.raw + ' ans';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                min: 20,
+                                max: 40,
+                                ticks: { stepSize: 5, callback: function(v) { return v + ' ans'; } }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
