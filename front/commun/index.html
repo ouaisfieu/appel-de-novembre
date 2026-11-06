@@ -1,0 +1,803 @@
+<!-- Chosen Palette: Warm Editorial Harmony (Background: #fcfbf7, Slate-900: #0f172a, Red Accent: #b91c1c, Amber Accent: #d97706, Emerald Accent: #047857, Card BG: #ffffff, Border: #e2e8f0) -->
+<!-- Application Structure Plan: 
+     L'application est structurée sous la forme d'un observatoire stratégique et analytique en 5 modules complémentaires accessible via un menu de navigation fluide :
+     1. Tableaux de Bord & Indicateurs Clefs : Macro-données, chiffres d'impact, fil d'alerte et jalons du conflit.
+     2. Réformes Arizona & Impact Social : Analyse approfondie de la limitation du chômage (ONEM, 6 vagues), arrêt 96/2026 de la Cour constitutionnelle, impact CPAS/RIS avec simulateur de statut, et flexibilisation du travail (indice lissé, nuit à minuit, fit note).
+     3. Modèle & Simulateur du Contre-Budget (21,2 Mld €) : Visualisation graphique des 8 axes alternatifs syndicaux (FGTB, CSC, SYNOVA) et explorateur dynamique des mesures de justice fiscale.
+     4. Chronologie & Agenda du "Novembre Noir" : Timeline historique de la contestation (2025-2026), planning interactif filtrable de la semaine de grève générale (17-26 nov 2026) et guide pratique des droits des grévistes.
+     5. Enjeux Juridiques, Libertés & Fractures Politiques : Analyse des requêtes unilatérales, de la "Loi Quintin", des positions patronales (FEB) et de la jauge de tension au sein de la coalition gouvernementale.
+     Cette organisation permet une navigation intuitive aussi bien pour une consultation rapide des chiffres clefs que pour une étude stratégique poussée du rapport. -->
+<!-- Visualization & Content Choices:
+     - Contre-Budget Syndical (21,2 Mld €) : Bar Chart horizontal interactif Chart.js + Fiches descriptives dynamiques (Goal: Compare & Inform).
+     - Vagues d'Exclusion ONEM & Arrêt 96/2026 : Grille d'impact chronologique avec filtre interactif par vague (Goal: Organize & Explain).
+     - Barèmes RIS CPAS : Chart.js Bar Chart comparatif + Simulateur de situation financière post-exclusion chômage (Goal: Compare & Calculate).
+     - Planning Novembre Noir : Matrice de grève filtrable par secteur (Transports, Éducation, Services Publics, Citoyen) (Goal: Plan & Explore).
+     - Analyse Juridique & Politiques : Cartes conceptuelles interactives et jauge de tension politique HTML/CSS (Goal: Organize & Evaluate).
+     - Confirmation : Aucun graphique SVG utilisé, aucune bibliothèque Mermaid JS utilisée. Utilisation stricte de Chart.js (Canvas) et HTML/CSS Tailwind. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-[#fcfbf7]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatoire Stratégique : Mobilisation Syndicale & Coalition Arizona</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#ffe1e1',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        },
+                        neutralbg: '#fcfbf7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom-color: #b91c1c;
+            color: #b91c1c;
+            font-weight: 700;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased font-sans min-h-full flex flex-col bg-[#fcfbf7]">
+
+    <!-- En-tête Global / Navigation Principal -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-red-700 text-white font-black text-xs px-2.5 py-1 rounded uppercase tracking-wider">Dossier Spécial</span>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-100 truncate">
+                        Mobilisation Sociale vs Coalition Arizona <span class="text-xs text-slate-400 font-normal hidden md:inline">| Belgique 2025-2026</span>
+                    </h1>
+                </div>
+                <div class="hidden lg:flex items-center space-x-4 text-xs text-slate-300">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                        <span class="w-2 h-2 mr-1.5 rounded-full bg-red-500 animate-pulse"></span> Statut : Novembre Noir (2026)
+                    </span>
+                    <span class="text-slate-400">Front Commun : FGTB • CSC • SYNOVA</span>
+                </div>
+            </div>
+            <!-- Navigation par Onglets -->
+            <nav class="flex space-x-1 sm:space-x-4 overflow-x-auto custom-scrollbar border-t border-slate-800 text-xs sm:text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active py-3 px-3 border-b-2 border-transparent hover:text-red-400 whitespace-nowrap transition-colors">
+                    📊 Tableaux de Bord
+                </button>
+                <button onclick="switchTab('réformes')" id="tab-réformes" class="tab-btn py-3 px-3 border-b-2 border-transparent hover:text-red-400 whitespace-nowrap transition-colors">
+                    ⚖️ Réformes & Impact Social
+                </button>
+                <button onclick="switchTab('budget')" id="tab-budget" class="tab-btn py-3 px-3 border-b-2 border-transparent hover:text-red-400 whitespace-nowrap transition-colors">
+                    💡 Contre-Budget (21,2 Mld €)
+                </button>
+                <button onclick="switchTab('novembre')" id="tab-novembre" class="tab-btn py-3 px-3 border-b-2 border-transparent hover:text-red-400 whitespace-nowrap transition-colors">
+                    📅 Chronologie & Novembre Noir
+                </button>
+                <button onclick="switchTab('politique')" id="tab-politique" class="tab-btn py-3 px-3 border-b-2 border-transparent hover:text-red-400 whitespace-nowrap transition-colors">
+                    🏛️ Justice, Libertés & Clivages
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- ==================== SECTION 1: DASHBOARD OVERVIEW ==================== -->
+        <section id="sec-dashboard" class="space-y-6">
+            <!-- Introduction de Section -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200/80 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Synthèse Économique & Sociale du Conflit</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Ce panneau de contrôle offre une vue d'ensemble de la confrontation majeure opposant le gouvernement fédéral belge dirigé par Bart De Wever (Coalition Arizona : N-VA, MR, Les Engagés, CD&V, Vooruit) au Front Commun Syndical (FGTB, CSC, SYNOVA). Face aux impératifs budgétaires européens exigeant de corriger une dérive du déficit projetée à -7,2 % du PIB d'ici 2038, l'exécutif impose des réformes structurelles profondes contested pour leur charge asymétrique sur les travailleurs.
+                </p>
+            </div>
+
+            <!-- KPIs Chiffres Clés -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-red-600">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Contre-Budget Syndical</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1">21,2 Mld €</div>
+                    <div class="text-xs text-red-700 font-medium mt-1">Recettes fiscales alternatives chiffrées</div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-amber-500">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Exclusions du Chômage</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1">180 000+</div>
+                    <div class="text-xs text-amber-700 font-medium mt-1">Personnes touchées par la limite de 24 mois</div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-blue-600">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Mobilisation Rue (Bruxelles)</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1">140 000</div>
+                    <div class="text-xs text-blue-700 font-medium mt-1">Manifestants le 14 octobre 2026</div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-600">
+                    <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">Sursis Juridique ONEM</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1">100 000</div>
+                    <div class="text-xs text-emerald-700 font-medium mt-1">Dossiers réexaminés (Arrêt 96/2026)</div>
+                </div>
+            </div>
+
+            <!-- Grille d'Aperçu Rapide : Visualisation Budgétaire & Pression Climat Social -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Vue synthétique du contre-budget -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-900 text-base">Répartition du Contre-Budget (21,2 Mld €)</h3>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-semibold">Front Commun</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="overviewBudgetChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3 italic text-center">
+                        Alternative syndicale privilégiant la taxation du capital et la fin des niches sur les statuts précaires.
+                    </p>
+                </div>
+
+                <!-- Panneau des Flashs d'actualité & Dynamique de Crise -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base mb-3 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-red-600 mr-2"></span> Faits Marquants & Jalons du Conflit
+                        </h3>
+                        <div class="space-y-3 text-xs">
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="font-bold text-slate-800 flex justify-between">
+                                    <span>Arrêt 96/2026 - Cour Constitutionnelle</span>
+                                    <span class="text-slate-400">10 Sept 2026</span>
+                                </div>
+                                <p class="text-slate-600 mt-1">Validation de la limite des 24 mois, mais annulation du régime transitoire de la 1ère vague jugé discriminatoire. Prolongation temporaire d'allocations accordée.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="font-bold text-slate-800 flex justify-between">
+                                    <span>Report de l'Indice Santé Lissé</span>
+                                    <span class="text-slate-400">Loi-programme 2025</span>
+                                </div>
+                                <p class="text-slate-600 mt-1">Calcul de l'indexation basé sur 12 mois au lieu de 4 : perte de pouvoir d'achat mesurée à ~341 €/an pour un salaire moyen.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="font-bold text-slate-800 flex justify-between">
+                                    <span>Tensions Coalition & Veto MR</span>
+                                    <span class="text-slate-400">Oct/Nov 2026</span>
+                                </div>
+                                <p class="text-slate-600 mt-1">Georges-Louis Bouchez (MR) refuse toute taxation des plus-values, provoquant des frictions sévères avec Vooruit et Les Engagés.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('novembre')" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold tracking-wide transition-colors">
+                        Consulter le Calendrier des Grèves du "Novembre Noir" →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== SECTION 2: RÉFORMES & IMPACT SOCIAL ==================== -->
+        <section id="sec-réformes" class="space-y-6 hidden">
+            <!-- Introductions de Section -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200/80 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">L'Architecture des Réformes et le Glissement Assuranciel</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Le programme Arizona refaçonne la protection sociale belge. L'analyse syndicale met en lumière un basculement du modèle assuranciel (fondé sur les cotisations du travail) vers une logique d'assistance ultra-conditionnalisée, reportant la charge sur les CPAS locaux et instaurant une dérégulation accrue des conditions de travail.
+                </p>
+            </div>
+
+            <!-- Sous-onglets internes aux réformes -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Colonne 1: Chômage et Arrêt Cour Constitutionnelle -->
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-900 text-base mb-2">1. Limitation de l'Assurance Chômage à 24 Mois</h3>
+                        <p class="text-xs text-slate-600 mb-4">
+                            Instaurée par la loi-programme du 18 juillet 2025, la mesure limite les allocations à 12 mois de base (+ max 12 mois selon la carrière). Les allocations d'insertion sont plafonnées à 1 an.
+                        </p>
+                        
+                        <!-- Table des 6 vagues d'exclusion ONEM -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                        <th class="p-2.5">Vague</th>
+                                        <th class="p-2.5">Échéance Initialement Prévue</th>
+                                        <th class="p-2.5">Profils Concernés (ONEM)</th>
+                                        <th class="p-2.5">Statut Post-Arrêt 96/2026</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 font-bold text-red-700">Vague 1</td>
+                                        <td class="p-2.5 whitespace-nowrap">01 / 01 / 2026</td>
+                                        <td class="p-2.5">3e période d'indemnisation (≥ 20 ans de chômage)</td>
+                                        <td class="p-2.5"><span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">Sursis 6 mois</span></td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 font-bold text-amber-700">Vague 2</td>
+                                        <td class="p-2.5 whitespace-nowrap">01 / 03 / 2026</td>
+                                        <td class="p-2.5">3e période (8 à 20 ans de chômage)</td>
+                                        <td class="p-2.5"><span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">Réexamen en cours</span></td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 font-bold text-slate-700">Vague 3</td>
+                                        <td class="p-2.5 whitespace-nowrap">01 / 04 / 2026</td>
+                                        <td class="p-2.5">3e période (< 8 ans de chômage)</td>
+                                        <td class="p-2.5"><span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">Application stricte</span></td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 font-bold text-slate-700">Vague 4</td>
+                                        <td class="p-2.5 whitespace-nowrap">01 / 07 / 2026</td>
+                                        <td class="p-2.5">2e période d'indemnisation</td>
+                                        <td class="p-2.5"><span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">Application stricte</span></td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2.5 font-bold text-slate-700">Vagues 5 & 6</td>
+                                        <td class="p-2.5 whitespace-nowrap">Mi-2026 à Mi-2027</td>
+                                        <td class="p-2.5">1re période & Garantie de revenus</td>
+                                        <td class="p-2.5"><span class="bg-slate-100 text-slate-700 text-[10px] px-2 py-0.5 rounded font-medium">Échéancier programmé</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900">
+                            <strong>Note sur l'Arrêt 96/2026 :</strong> La Cour Constitutionnelle a validé le principe de limitation des 24 mois (non-violation du Standstill), mais a annulé les modalités d'exclusion brusques de la 1ère vague, obligeant l'ONEM à réexaminer 100 000 dossiers avec un sursis rétroactif d'adaptation.
+                        </div>
+                    </div>
+
+                    <!-- Flexibilisation du travail & Fins de carrière -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 text-base">2. Flexibilisation, Salaires & Santé au Travail</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-1">Indexation & Loi de 1996</h4>
+                                <p class="text-slate-600">Nouveau calcul de l'indice santé sur 12 mois au lieu de 4. Frein d'indexation en cas d'inflation > 4%. Prolongation du gel des marges salariales jusqu'en 2027.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-1">Horaires & Travail de Nuit</h4>
+                                <p class="text-slate-600">Début du travail de nuit repoussé de 20h à minuit (amputation des primes). Contingent d'heures supp. volontaires porté à 360h (450h Horeca).</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-1">Pensions & Malus</h4>
+                                <p class="text-slate-600">Instauration d'un malus financier permanent en cas de départ avant 67 ans. Quasi-suppression du RCC (prépension) réservé aux restructurations lourdes.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <h4 class="font-bold text-slate-800 mb-1">Maladie & "Fit Note"</h4>
+                                <p class="text-slate-600">Évaluation obligatoire dès 8 semaines d'incapacité. Remplacement du certificat médical par le certificat d'aptitude "Fit Note". Sanctions sur >500k malades de longue durée.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne 2: Impact CPAS & Simulateur RIS -->
+                <div class="space-y-6">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-900 text-base mb-2">3. Transfert vers les CPAS</h3>
+                        <p class="text-xs text-slate-600 mb-4">
+                            L'exclusion du chômage reporte les demandeurs d'emploi vers le Revenu d'Intégration Sociale (RIS) des CPAS, soumis à une enquête sociale intrusive et à la prise en compte des revenus des cohabitants.
+                        </p>
+                        <!-- Chart Barèmes RIS -->
+                        <div class="chart-container" style="height: 220px;">
+                            <canvas id="risChart"></canvas>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <h4 class="font-bold text-xs text-slate-900 mb-2">Simulateur d'Impact Financier Post-Exclusion</h4>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <label class="block text-slate-600 font-medium mb-1">Statut du ménage :</label>
+                                    <select id="sim-status" onchange="calculateImpact()" class="w-full bg-slate-50 border border-slate-300 rounded p-1.5 text-xs">
+                                        <option value="911.56">Personne cohabitante (911,56 €/mois)</option>
+                                        <option value="1367.34" selected>Personne isolée (1 367,34 €/mois)</option>
+                                        <option value="1847.89">Famille à charge (1 847,89 €/mois)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-600 font-medium mb-1">Ancienne allocation chômage estimée (€/mois) :</label>
+                                    <input type="number" id="sim-old" value="1650" oninput="calculateImpact()" class="w-full bg-slate-50 border border-slate-300 rounded p-1.5 text-xs">
+                                </div>
+                                <div class="p-3 bg-red-50 rounded border border-red-100 text-red-900">
+                                    <div class="text-[11px] font-semibold">Perte mensuelle nette :</div>
+                                    <div id="sim-result" class="text-lg font-black text-red-700">- 282,66 € / mois</div>
+                                    <div id="sim-note" class="text-[10px] text-red-600 mt-1">Perte de couverture mutuelle automatique INAMI à vérifier.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== SECTION 3: CONTRE-BUDGET SYNDICAL ==================== -->
+        <section id="sec-budget" class="space-y-6 hidden">
+            <!-- Introductions de Section -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200/80 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Le Contre-Budget Alternatif de 21,2 Milliards d'Euros</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Pour réfuter le postulat du <em>« There is no alternative »</em>, le Front Commun Syndical (FGTB, CSC, SYNOVA) a modélisé un contre-budget chiffré. Fondé sur le principe <strong>« Un euro est un euro »</strong>, il vise à faire basculer le fardeau fiscal des revenus du travail vers les revenus du capital et à éliminer l'optimisation agressive. Une pétition de plus de 76 000 signatures a appuyé cette démarche devant le Parlement.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Visualisation Principale du Budget -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-900 text-base mb-1">Structure des Recettes Fiscales Alternatives</h3>
+                    <p class="text-xs text-slate-500 mb-4">Cliquez sur une barre du graphique ou sur une mesure pour afficher le détail technique.</p>
+                    <div class="chart-container" style="height: 380px;">
+                        <canvas id="detailBudgetChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Explorateur Interactif de Leviei Fiscaux -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-red-700 mb-1">Explorateur Détaillé</div>
+                        <h3 id="measure-title" class="font-extrabold text-slate-900 text-lg mb-2">Globalisation des revenus (IRPP)</h3>
+                        <div id="measure-badge" class="inline-block bg-red-100 text-red-800 font-bold text-xs px-2.5 py-1 rounded mb-3">
+                            + 12 900 Millions € (12.9 Mld €)
+                        </div>
+                        <p id="measure-desc" class="text-xs text-slate-600 leading-relaxed mb-4">
+                            Soumettre l'ensemble des revenus (travail, capital, loyers réels, plus-values mobilières) au même barème progressif de l'impôt sur les personnes physiques, mettant fin aux régimes dérogatoires du capital.
+                        </p>
+                    </div>
+
+                    <!-- Sélecteur rapide des leviers -->
+                    <div>
+                        <div class="text-xs font-bold text-slate-800 mb-2">Sélectionnez une mesure :</div>
+                        <div class="space-y-1.5 text-xs max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                            <button onclick="updateMeasure(0)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">1. Globalisation IRPP (+12,9 Mld €)</button>
+                            <button onclick="updateMeasure(1)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">2. Déductions ISoc (+2,55 Mld €)</button>
+                            <button onclick="updateMeasure(2)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">3. Statuts précaires ONSS (+1,88 Mld €)</button>
+                            <button onclick="updateMeasure(3)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">4. Réductions ONSS ciblées (+1,32 Mld €)</button>
+                            <button onclick="updateMeasure(4)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">5. Subventions salariales (+890 M €)</button>
+                            <button onclick="updateMeasure(5)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">6. Salaire garanti (+575 M €)</button>
+                            <button onclick="updateMeasure(6)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">7. Sociétés de management (+526 M €)</button>
+                            <button onclick="updateMeasure(7)" class="w-full text-left p-2 rounded bg-slate-50 hover:bg-slate-100 font-medium truncate">8. Norme 1996 & Pharma (+597 M €)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== SECTION 4: CHRONOLOGIE & NOVEMBRE NOIR ==================== -->
+        <section id="sec-novembre" class="space-y-6 hidden">
+            <!-- Introductions de Section -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200/80 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Chronologie du Mouvement et Planification du "Novembre Noir"</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Après la montée en puissance de 2025 et les manifestations massives d'octobre 2026 (jusqu'à 140 000 personnes), le Front Commun déploie un plan d'action d'une intensité inédite pour la fin novembre 2026. L'objectif est de paralyser progressivement l'économie pour forcer le gouvernement à rouvrir la concertation sociale.
+                </p>
+            </div>
+
+            <!-- Planning de la semaine "Novembre Noir" (17-26 Nov 2026) -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Agenda des Actions : Novembre 2026</h3>
+                        <p class="text-xs text-slate-500">Filtrer les actions par secteur d'activité</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5 text-xs">
+                        <button onclick="filterNov('all')" class="nov-btn active bg-slate-800 text-white px-3 py-1 rounded">Tous</button>
+                        <button onclick="filterNov('transport')" class="nov-btn bg-slate-100 text-slate-700 px-3 py-1 rounded">Transports</button>
+                        <button onclick="filterNov('public')" class="nov-btn bg-slate-100 text-slate-700 px-3 py-1 rounded">Services Publics</button>
+                        <button onclick="filterNov('citoyen')" class="nov-btn bg-slate-100 text-slate-700 px-3 py-1 rounded">Jeunesse & Climat</button>
+                        <button onclick="filterNov('general')" class="nov-btn bg-slate-100 text-slate-700 px-3 py-1 rounded">Grève Générale</button>
+                    </div>
+                </div>
+
+                <!-- Timeline des événements du Mois Noir -->
+                <div class="space-y-3 text-xs" id="nov-events-container">
+                    <!-- Event 1 -->
+                    <div class="nov-card citoyen p-3.5 bg-slate-50 rounded-lg border-l-4 border-l-blue-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-blue-900 text-sm">Mardi 17 Novembre 2026</span>
+                            <span class="ml-2 bg-blue-100 text-blue-800 text-[10px] px-2 py-0.5 rounded font-bold">Manifestation Jeunesse & Étudiants</span>
+                            <p class="text-slate-600 mt-1">Descente dans la rue des étudiants et élèves pour la défense de l'emploi de qualité, du logement et contre la précarité.</p>
+                        </div>
+                        <span class="text-slate-400 font-medium whitespace-nowrap">Bruxelles</span>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div class="nov-card public p-3.5 bg-slate-50 rounded-lg border-l-4 border-l-purple-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-purple-900 text-sm">Mercredi 18 Novembre 2026</span>
+                            <span class="ml-2 bg-purple-100 text-purple-800 text-[10px] px-2 py-0.5 rounded font-bold">Services Publics & Éducation</span>
+                            <p class="text-slate-600 mt-1">Mobilisation sectorielle des agents de la fonction publique (CGSP, CSC) et enseignants (« Révolution des Craies »).</p>
+                        </div>
+                        <span class="text-slate-400 font-medium whitespace-nowrap">Régional</span>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="nov-card citoyen p-3.5 bg-slate-50 rounded-lg border-l-4 border-l-emerald-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-emerald-900 text-sm">Lundi 23 Novembre 2026</span>
+                            <span class="ml-2 bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">Grande Marche Citoyenne (10h30)</span>
+                            <p class="text-slate-600 mt-1">Alliance avec la Coalition Santé, Greenpeace et les mouvements féministes contre la vie chère et le démantèlement social.</p>
+                        </div>
+                        <span class="text-slate-400 font-medium whitespace-nowrap">Bruxelles - Gare du Nord</span>
+                    </div>
+
+                    <!-- Event 4 -->
+                    <div class="nov-card transport p-3.5 bg-slate-50 rounded-lg border-l-4 border-l-amber-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-amber-900 text-sm">Mardi 24 Novembre 2026</span>
+                            <span class="ml-2 bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded font-bold">Grève Sectorielle Transports</span>
+                            <p class="text-slate-600 mt-1">Blocage du réseau ferroviaire (SNCB), des bus régionaux (TEC, STIB, De Lijn) et perturbations aéroportuaires.</p>
+                        </div>
+                        <span class="text-slate-400 font-medium whitespace-nowrap">National</span>
+                    </div>
+
+                    <!-- Event 5 -->
+                    <div class="nov-card public p-3.5 bg-slate-50 rounded-lg border-l-4 border-l-purple-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-purple-900 text-sm">Mercredi 25 Novembre 2026</span>
+                            <span class="ml-2 bg-purple-100 text-purple-800 text-[10px] px-2 py-0.5 rounded font-bold">Grève des Services Publics & Hôpitaux</span>
+                            <p class="text-slate-600 mt-1">Arrêt de travail dans les administrations, les hôpitaux (service minimum), le ramassage des d'ordures et les écoles.</p>
+                        </div>
+                        <span class="text-slate-400 font-medium whitespace-nowrap">National</span>
+                    </div>
+
+                    <!-- Event 6 -->
+                    <div class="nov-card general p-3.5 bg-red-50 rounded-lg border-l-4 border-l-red-600 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <span class="font-bold text-red-900 text-sm">Jeudi 26 Novembre 2026</span>
+                            <span class="ml-2 bg-red-600 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Grève Générale Interprofessionnelle</span>
+                            <p class="text-red-800 mt-1 font-medium">Paralysie totale des secteurs public et privé, des zonings industriels, des ports et de la logistique.</p>
+                        </div>
+                        <span class="text-red-700 font-bold whitespace-nowrap">Belgique Entière</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fiche Droits des Grévistes -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="font-bold text-slate-900 text-base mb-3">Guide Pratique de la Grève (Front Commun)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                    <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <div class="font-bold text-slate-800 mb-1">Droit Constitutionnel</div>
+                        <p class="text-slate-600">La grève suspend l'exécution du contrat de travail sans le rompre. Aucun motif de licenciement ne peut être tiré du fait de faire grève.</p>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <div class="font-bold text-slate-800 mb-1">Indemnité de Grève</div>
+                        <p class="text-slate-600">Indemnité syndicale forfaitaire fixée à <strong>40 € / jour</strong> pour les affiliés en ordre de cotisation, versée par les caisses syndicales.</p>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <div class="font-bold text-slate-800 mb-1">Interdiction des Remplacements</div>
+                        <p class="text-slate-600">Les entreprises ne peuvent pas faire appel à des travailleurs intérimaires pour remplacer du personnel gréviste (Article 26 Loi Intérim).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== SECTION 5: JURISPRUDENCE & POLITIQUE ==================== -->
+        <section id="sec-politique" class="space-y-6 hidden">
+            <!-- Introductions de Section -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200/80 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Tensions Démocratiques, Judiciarisation et Clivages Politiques</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Le conflit social belge dépasse l'arène de la négociation salariale. Il met en lumière une judiciarisation inédite du droit de grève, des menaces doctrinales sur la liberté d'association et des fractures idéologiques profondes au sein du gouvernement Arizona et du patronat.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Judiciarisation & Loi Quintin -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base">1. Judiciarisation & Attaques sur les Libertés</h3>
+                    
+                    <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2">
+                        <div class="font-bold text-slate-800 text-sm">Les Requêtes Unilatérales contre les Piquets</div>
+                        <p class="text-slate-600 leading-relaxed">
+                            Analysées par Jean Faniel et Kurt Vandaele (CRISP), les procédures de requête unilatérale permettent aux employeurs d'obtenir l'interdiction de piquets de grève par un juge sans débat contradictoire, avec astreintes financières lourdes et intervention policière.
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 bg-red-50 rounded-lg border border-red-200 text-xs space-y-2">
+                        <div class="font-bold text-red-900 text-sm">Projet de "Loi Quintin" & Liberté d'Association</div>
+                        <p class="text-red-800 leading-relaxed">
+                            Portée par le ministre de l'Intérieur Bernard Quintin (MR), la proposition d'interdiction d'activités administratives pour menace à la sécurité nationale fait l'objet d'un tollé. La coalition « Droit de Protester » (Amnesty, FGTB, CSC, Ligue des Droits Humains) dénonce un <em>"chilling effect"</em> (effet d'autocensure) liberticide.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Jauge de Tension Politique & Patronat -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base">2. Positionnement du Patronat & Clivages Interne</h3>
+
+                    <!-- FEB Position -->
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                        <div class="font-bold text-slate-800 flex justify-between">
+                            <span>Soutien de la FEB / VBO</span>
+                            <span class="text-slate-500">Pieter Timmermans</span>
+                        </div>
+                        <p class="text-slate-600 mt-1">La FEB soutient fermement l'Arizona pour restaurer la compétitivité (Clean Industrial Deal, heures supp, R&D) et condamne les grèves répétées jugées néfastes pour l'attractivité internationale.</p>
+                    </div>
+
+                    <!-- Jauge de Tension au sein de la Coalition Arizona -->
+                    <div class="p-4 bg-amber-50 rounded-lg border border-amber-200 text-xs space-y-3">
+                        <div class="font-bold text-amber-900 flex justify-between">
+                            <span>Jauge de Fissure Gouvernementale</span>
+                            <span class="text-red-700 font-extrabold">TENSION MAXIMALE</span>
+                        </div>
+
+                        <!-- Visuel Jauge -->
+                        <div class="w-full bg-amber-200 rounded-full h-3 overflow-hidden flex">
+                            <div class="bg-blue-600 h-full w-[40%]" title="MR (Bouchez) - Veto Fisc"></div>
+                            <div class="bg-red-500 h-full w-[30%]" title="Vooruit (Rousseau) - Justice Fiscale"></div>
+                            <div class="bg-emerald-600 h-full w-[30%]" title="Les Engagés (Prévot) - Compromis"></div>
+                        </div>
+
+                        <div class="space-y-1.5 text-slate-700">
+                            <p><strong>• MR (Bouchez) :</strong> Veto absolu sur la taxation des plus-values et défense des privilèges fiscaux (ex: niche des footballeurs à 70M€).</p>
+                            <p><strong>• Vooruit & Les Engagés :</strong> Rousseau et Prévot exigent une contribution juste du capital pour rendre l'effort acceptable.</p>
+                            <p><strong>• Bart De Wever (N-VA) :</strong> Médiateur sous pression du Roi pour sauver la majorité avant le vote du budget 2027.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-12 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-bold text-slate-200">Observatoire Social Belge - Rapport d'Analyse Stratégique (2025-2026)</p>
+                <p class="text-slate-500 mt-0.5">Données consolidées d'après les publications FGTB, CSC, SYNOVA, ONEM, CRISP & Cour Constitutionnelle.</p>
+            </div>
+            <div class="flex items-center space-x-4 text-slate-400">
+                <span>Front Commun Syndical</span>
+                <span>•</span>
+                <span>Coalition Arizona</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logiciel / JS Interactivité & Dynamic Charts -->
+    <script>
+        // Variables globales des Graphiques Chart.js
+        let overviewBudgetChartInstance = null;
+        let detailBudgetChartInstance = null;
+        let risChartInstance = null;
+
+        // Base de Données du Contre-Budget (21,2 Mld €)
+        const budgetData = [
+            { title: "Globalisation des revenus (IRPP)", yield: 12900, labelYield: "12,9 Mld €", desc: "Soumettre l'ensemble des revenus (travail, capital, loyers réels, plus-values) au même barème progressif d'imposition.", bg: "#b91c1c" },
+            { title: "Limitation des déductions ISoc", yield: 2550, labelYield: "2,55 Mld €", desc: "Plafonnement des Déductions Revenus Définitivement Taxés (+1,05 md €), déductions innovation (+1 md €) et suppression avantage diesel professionnel (+500 M €).", bg: "#dc2626" },
+            { title: "Harmonisation statuts précaires", yield: 1880, labelYield: "1,88 Mld €", desc: "Assujettissement ONSS du travail étudiant (+750 M €), flexi-jobs (+380 M €) et suppression des niches sur rémunérations alternatives (+756 M €).", bg: "#ea580c" },
+            { title: "Suppression réductions ONSS ciblées", yield: 1320, labelYield: "1,32 Mld €", desc: "Abolition réduction premier engagement jugée inefficace (+620 M €) et fin du plafond des cotisations pour indépendants très fortunés (+700 M €).", bg: "#d97706" },
+            { title: "Encadrement subventions salariales", yield: 890, labelYield: "890 M €", desc: "Conditionnalité stricte à la création d'emplois durables et écrémage des dispenses de précompte sans contrepartie.", bg: "#0284c7" },
+            { title: "Maintien & Prolongation Salaire Garanti", yield: 575, labelYield: "575 M €", desc: "Prolonger le salaire garanti par l'employeur en cas de maladie pour responsabiliser sur les risques psycho-sociaux et soulager l'INAMI.", bg: "#059669" },
+            { title: "Lutte contre sociétés de management", yield: 526, labelYield: "526 M €", desc: "Limiter les avantages fiscaux des dirigeants d'entreprises utilisant des montages en sociétés de management.", bg: "#4f46e5" },
+            { title: "Révision Norme 1996 & Pharma", yield: 597, labelYield: "597 M €", desc: "Révision de la loi de 1996 générant des cotisations ONSS (+360 M €) et économies sur médicaments du secteur pharmaceutique (+237 M €).", bg: "#7c3aed" }
+        ];
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            initOverviewChart();
+            initRisChart();
+            initDetailBudgetChart();
+            calculateImpact();
+        });
+
+        // Gestionnaire de Changement d'Onglets
+        function switchTab(tabId) {
+            // Masquer toutes les sections
+            const sections = ['dashboard', 'réformes', 'budget', 'novembre', 'politique'];
+            sections.forEach(s => {
+                const el = document.getElementById('sec-' + s);
+                if (el) el.classList.add('hidden');
+                const btn = document.getElementById('tab-' + s);
+                if (btn) btn.classList.remove('active');
+            });
+
+            // Afficher la section demandée
+            const targetSec = document.getElementById('sec-' + tabId);
+            if (targetSec) targetSec.classList.remove('hidden');
+            const targetBtn = document.getElementById('tab-' + tabId);
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Resize charts si nécessaire
+            if (tabId === 'budget' && detailBudgetChartInstance) {
+                detailBudgetChartInstance.resize();
+            }
+            if (tabId === 'réformes' && risChartInstance) {
+                risChartInstance.resize();
+            }
+        }
+
+        // Chart 1: Aperçu Synthétique Contre-Budget (Dashboard)
+        function initOverviewChart() {
+            const ctx = document.getElementById('overviewBudgetChart').getContext('2d');
+            overviewBudgetChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: budgetData.map(b => b.title.substring(0, 20) + '...'),
+                    datasets: [{
+                        data: budgetData.map(b => b.yield),
+                        backgroundColor: budgetData.map(b => b.bg),
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    return val >= 1000 ? ` ${(val/1000).toFixed(2)} Mld €` : ` ${val} M €`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Comparatif Barèmes RIS CPAS
+        function initRisChart() {
+            const ctx = document.getElementById('risChart').getContext('2d');
+            risChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Cohabitant', 'Isolé', 'Famille à charge'],
+                    datasets: [{
+                        label: 'Barème Mensuel RIS (€) au 01/09/2026',
+                        data: [911.56, 1367.34, 1847.89],
+                        backgroundColor: ['#f59e0b', '#3b82f6', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ` ${ctx.raw.toLocaleString('fr-BE', {style: 'currency', currency: 'EUR'})}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { font: { size: 10 } } },
+                        x: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // Chart 3: Détail complet du Contre-Budget (Onglet Budget)
+        function initDetailBudgetChart() {
+            const ctx = document.getElementById('detailBudgetChart').getContext('2d');
+            detailBudgetChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: budgetData.map(b => b.title),
+                    datasets: [{
+                        label: 'Rendement estimé (en Millions €)',
+                        data: budgetData.map(b => b.yield),
+                        backgroundColor: budgetData.map(b => b.bg),
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            updateMeasure(index);
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    const val = context.raw;
+                                    return val >= 1000 ? ` +${(val/1000).toFixed(2)} Mld €` : ` +${val} M €`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // Mettre à jour la fiche descriptive de l'explorateur budget
+        function updateMeasure(index) {
+            const item = budgetData[index];
+            document.getElementById('measure-title').innerText = item.title;
+            document.getElementById('measure-badge').innerText = `+ ${item.labelYield}`;
+            document.getElementById('measure-desc').innerText = item.desc;
+        }
+
+        // Simulateur d'impact CPAS / Chômage
+        function calculateImpact() {
+            const statusSelect = document.getElementById('sim-status');
+            const risVal = parseFloat(statusSelect.value);
+            const oldVal = parseFloat(document.getElementById('sim-old').value) || 0;
+            
+            const diff = risVal - oldVal;
+            const resEl = document.getElementById('sim-result');
+            
+            if (diff < 0) {
+                resEl.className = "text-lg font-black text-red-700";
+                resEl.innerText = `- ${Math.abs(diff).toFixed(2).replace('.', ',')} € / mois`;
+            } else {
+                resEl.className = "text-lg font-black text-emerald-700";
+                resEl.innerText = `+ ${diff.toFixed(2).replace('.', ',')} € / mois`;
+            }
+        }
+
+        // Filtre pour la chronologie "Novembre Noir"
+        function filterNov(category) {
+            // Boutons active
+            document.querySelectorAll('.nov-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white', 'active');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            event.target.classList.remove('bg-slate-100', 'text-slate-700');
+            event.target.classList.add('bg-slate-800', 'text-white', 'active');
+
+            // Cartes événements
+            const cards = document.querySelectorAll('.nov-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
