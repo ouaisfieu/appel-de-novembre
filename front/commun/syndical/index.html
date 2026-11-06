@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse Critique : Mobilisation Syndicale vs Coalition Arizona (2025-2026)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-active {
+            border-bottom: 3px solid #be123c;
+            color: #be123c;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800 font-sans antialiased min-h-screen flex flex-col">
+
+<!-- Chosen Palette: Warm Earthy Neutral & Crimson Resistance -->
+<!-- Application Structure Plan: Un tableau de bord interactif divisé en 5 sections thématiques (Vue d'Ensemble Macro, Réformes & Impact Social, Mobilisation Syndicale & Contre-Budget, Dimension Légale & Répression, Calculateurs Interactifs) avec navigation par onglets. Cette structure non-linéaire privilégie la clarté pédagogique et l'expérimentation personnelle des données du rapport. -->
+<!-- Visualization & Content Choices: Graphiques Chart.js (Canvas uniquement, responsive, maintainAspectRatio false, pas de SVG ni Mermaid): Bar chart pour la répartition régionale des jours de grève, Stacked bar pour le déficit des CPAS, Doughnut chart pour le contre-budget de 21 milliards, Grouped bar pour l'inégalité de richesse, et Bar chart pour le malus pension genré. Présentation des textes avec accordéons, filtres et calculateurs interactifs en Vanilla JS. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-slate-900 text-stone-100 shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">✊</span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white">Mobilisation Syndicale vs Arizona</h1>
+                    <p class="text-xs text-stone-400">Observatoire de la Crise Sociale & Budgétaire Belge (2025-2026)</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="bg-rose-900 text-rose-200 text-xs px-3 py-1 rounded-full font-medium border border-rose-700">Crise Fédérale • Nov 2026</span>
+                <span class="bg-stone-800 text-stone-300 text-xs px-3 py-1 rounded-full font-medium border border-stone-700">Rapport d'Analyse</span>
+            </div>
+        </div>
+        
+        <nav class="bg-slate-800 border-t border-slate-700 text-stone-300">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-2 sm:space-x-6 overflow-x-auto py-2 text-sm font-medium scrollbar-none">
+                <button onclick="switchTab('sec-overview')" id="btn-sec-overview" class="tab-btn tab-active px-3 py-2 flex items-center gap-2 whitespace-nowrap">
+                    <span>📊</span> 1. Cadre Macro & Crise
+                </button>
+                <button onclick="switchTab('sec-reforms')" id="btn-sec-reforms" class="tab-btn px-3 py-2 flex items-center gap-2 whitespace-nowrap">
+                    <span>⚠️</span> 2. Réformes & Transferts CPAS
+                </button>
+                <button onclick="switchTab('sec-union')" id="btn-sec-union" class="tab-btn px-3 py-2 flex items-center gap-2 whitespace-nowrap">
+                    <span>🚩</span> 3. Front Syndical & Budget
+                </button>
+                <button onclick="switchTab('sec-justice')" id="btn-sec-justice" class="tab-btn px-3 py-2 flex items-center gap-2 whitespace-nowrap">
+                    <span>⚖️</span> 4. Justice & Espace Démocratique
+                </button>
+                <button onclick="switchTab('sec-sim')" id="btn-sec-sim" class="tab-btn px-3 py-2 flex items-center gap-2 whitespace-nowrap">
+                    <span>🧮</span> 5. Calculateur d'Impact
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <section id="sec-overview" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>🏛️</span> Le Crash de la Coalition Arizona et l'Impasse Budgétaire
+                </h2>
+                <p class="text-stone-600 leading-relaxed">
+                    Cette section offre un panorama synthétique de l'impasse politique majeure survenue le 2 novembre 2026 avec la démission du gouvernement fédéral dirigé par Bart De Wever. Confronté aux exigences strictes de la Procédure pour Déficit Excessif (PDE) imposée par la Commission européenne, l'exécutif a privilégié une politique d'austérité unilatérale qui s'est heurtée à des vetos partisano-idéologiques et à une mobilisation populaire sans précédent. Explorez ci-dessous les indicateurs clés et les postures contradictoires des partenaires de la coalition.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold uppercase text-stone-500 tracking-wider">Déficit Public (2026)</span>
+                        <div class="text-3xl font-extrabold text-rose-700 mt-1">-5,0 %</div>
+                        <p class="text-xs text-stone-500 mt-1">Projection 2031 : -6,3 % sans réforme</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-stone-100 text-xs text-stone-600">
+                        Sous Procédure de Déficit Excessif UE
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold uppercase text-stone-500 tracking-wider">Effort Budgétaire Exigé</span>
+                        <div class="text-3xl font-extrabold text-slate-900 mt-1">10 à 14 Mds €</div>
+                        <p class="text-xs text-stone-500 mt-1">Horizon d'apurement : 2029</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-stone-100 text-xs text-stone-600">
+                        Objectif de réduction des dépenses
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold uppercase text-stone-500 tracking-wider">Mobilisation Sociale</span>
+                        <div class="text-3xl font-extrabold text-rose-700 mt-1">&gt; 1,0 M</div>
+                        <p class="text-xs text-stone-500 mt-1">Jours de grève recensés en 2025</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-stone-100 text-xs text-stone-600">
+                        Source ETUI • Record depuis 1993
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold uppercase text-stone-500 tracking-wider">Exclusions ONEM Estimées</span>
+                        <div class="text-3xl font-extrabold text-amber-600 mt-1">180k - 200k</div>
+                        <p class="text-xs text-stone-500 mt-1">Basculement vers les CPAS communaux</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-stone-100 text-xs text-stone-600">
+                        Effet de la limite de 24 mois
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Cartographie des Lignes Rouges au sein de l'Arizona</h3>
+                        <p class="text-sm text-stone-500">Sélectionnez une formation politique pour visualiser ses arbitrages et vetos budgétaires.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterParty('all')" class="party-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white">Tous</button>
+                        <button onclick="filterParty('MR')" class="party-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-200 text-stone-700 hover:bg-stone-300">MR (Libéraux)</button>
+                        <button onclick="filterParty('NVA')" class="party-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-200 text-stone-700 hover:bg-stone-300">N-VA (Nationalistes)</button>
+                        <button onclick="filterParty('Vooruit')" class="party-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-200 text-stone-700 hover:bg-stone-300">Vooruit (Socialistes)</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-stone-100 text-stone-700 uppercase text-xs">
+                                <th class="p-3 border-b">Parti</th>
+                                <th class="p-3 border-b">Lignes Rouges Inflexibles (Vetos)</th>
+                                <th class="p-3 border-b">Concessions Stratégiques</th>
+                                <th class="p-3 border-b">Impact Direct sur la Trajectoire</th>
+                            </tr>
+                        </thead>
+                        <tbody id="party-table-body" class="divide-y divide-stone-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-reforms" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>⚠️</span> Anatomic critique des Réformes Antisociales
+                </h2>
+                <p class="text-stone-600 leading-relaxed">
+                    Cette section examine l'ingénierie des réformes contenues dans la loi-programme du 18 juillet 2025. Le passage d'un État social protecteur à un « État social actif » répressif s'articule autour de trois piliers : la suppression du chômage illimité, le verrouillage des salaires via un plafonnement de l'indexation, et la pénalisation des carrières incomplètes ou interrompues pour maladie. Découvrez l'impact systémique de ces mesures et le transfert massif de charges financières vers les communes.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">1. Le Transfert de Charge de l'ONEM vers les CPAS</h3>
+                        <p class="text-sm text-stone-500 mb-4">
+                            La fin du chômage illimité (limite à 24 mois) entraîne un basculement mécanique des exclus vers le Revenu d'Intégration Sociale (RIS) des CPAS locaux. Malgré une compensation fédérale temporaire, le déficit net à charge des fonds propres communaux devient insoutenable.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="cpasChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900">
+                        <strong>Facteur de saturation :</strong> La compensation fédérale chute à 75% la 4e année, laissant un trou budgétaire annuel estimé à près de 184 millions d'euros pour les communes en 2029.
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">2. Disparité Genrée du « Malus Pension »</h3>
+                        <p class="text-sm text-stone-500 mb-4">
+                            Le mécanisme de pénalisation financière des départs anticipés frappe de manière disproportionnée les travailleurs aux carrières hachées et à temps partiel, affectant majoritairement les femmes.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="pensionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-rose-50 rounded-lg border border-rose-200 text-xs text-rose-900">
+                        <strong>Analyse de genre :</strong> 49 % des femmes en fin de carrière risquent une perte brute de pension (jusqu'à 300 €/mois), contre 21 % des hommes, en raison du poids non rémunéré du travail reproductif et du soin.
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>💡</span> Plafonnement de l'Indexation & Blocage des Salaires
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                        <div class="font-bold text-slate-900 mb-1">Loi de 1996 & Marge 0%</div>
+                        <p class="text-stone-600 text-xs">Le Conseil Central de l'Économie (CCE) a fixé la marge d'augmentation salariale brute à 0 % pour 2025-2026, arguant d'un handicap salarial de 1,1 %, tout en occultant les subventions salariales massives patronales (qui créent en réalité un avantage de 2,7 %).</p>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                        <div class="font-bold text-slate-900 mb-1">Index Capping (> 4.000 €)</div>
+                        <p class="text-stone-600 text-xs">Seule la première tranche de 4.000 € brut bénéficie de l'indexation normale (plafonnée à 2%). La partie supérieure n'est indexée qu'à hauteur de la différence entre l'inflation réelle et ce plafond, rognant le pouvoir d'achat.</p>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                        <div class="font-bold text-slate-900 mb-1">Avis Rejeté du CNT/CCE</div>
+                        <p class="text-stone-600 text-xs">Le 31 mars 2026, les partenaires sociaux ont dénoncé unanimement une mesure d'une extrême complexité technique et le contournement délibéré de la concertation sociale par l'exécutif.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-union" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>✊</span> Riposte du Front Commun & Contre-Propositions
+                </h2>
+                <p class="text-stone-600 leading-relaxed">
+                    Cette section analyse la réorganisation et la résistance du mouvement ouvrier belge (FGTB, CSC, CGSLB). L'unité syndicale s'est accompagnée du développement d'une contre-expertise rigoureuse : la formulation d'un budget alternatif de 21 milliards d'euros appuyé sur la justice fiscale, et la dénonciation de l'explosion des inégalités de patrimoine entre le sommet de la pyramide sociale et la moitié la moins aisée de la population.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Architecture du Contre-Budget (21 Milliards €)</h3>
+                    <p class="text-sm text-stone-500 mb-4">
+                        Propositions syndicales et des centres d'études pour assainir les finances publiques sans sacrifier les droits sociaux.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">Inégalité d'Accumulation (T1 2025 - T1 2026)</h3>
+                    <p class="text-sm text-stone-500 mb-4">
+                        Évolution comparée du patrimoine net (Mds €) et variation réelle du pouvoir d'achat face à l'inflation.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="wealthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-stone-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">Intensité Régionale de la Grève</h3>
+                        <p class="text-sm text-stone-500 mb-4">Jours de grève pour 1.000 salariés en 2025 (Données ETUI).</p>
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="regionChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-xs text-stone-500 mt-2">L'asymétrie s'explique par la précarité structurelle des bassins désindustrialisés du Sud et la présence de Vooruit au gouvernement fédéral.</p>
+                </div>
+
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900">Acteurs & Reconfigurations Stratégiques</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                            <div class="font-bold text-rose-700 mb-1">La Virage Social-Libéral de la CGSLB</div>
+                            <p class="text-stone-600 text-xs">Historiquement modérée et proche des partis libéraux, la CGSLB (sous P. Roijens et G. Truyens) a rompu avec le MR, contestant la suppression du terme « libéral » et s'engageant totalement dans le Front Commun contre le saut d'index.</p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                            <div class="font-bold text-slate-900 mb-1">Le Dilemme Interne de la FGTB</div>
+                            <p class="text-stone-600 text-xs">La FGTB Wallonne/Bruxelloise prône un blocage total en résonance avec l'opposition du PS, tandis que le Vlaams ABVV adopte une démarche plus pragmatique pour préserver le rôle de Vooruit comme garde-fou de l'exécutif.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-justice" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>⚖️</span> Dérive Sécuritaire & Bataille Juridique
+                </h2>
+                <p class="text-stone-600 leading-relaxed">
+                    Face à l'intensité de la protestation sociale, le pouvoir politique et l'appareil d'État ont déployé des mécanismes de judiciarisation et de répression. Cette section récapitule les étapes clés de la bataille devant la Cour constitutionnelle et met en lumière l'asymétrie structurelle entre le temps de la justice constitutionnelle et l'immédiateté des injonctions patronales contre les piquets de grève.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-6">
+                <h3 class="text-lg font-bold text-slate-900">Chronologie du Recours Syndical (Arrêt n° 96/2026)</h3>
+                
+                <div class="relative border-l-2 border-slate-300 ml-4 pl-6 space-y-6">
+                    <div class="relative">
+                        <span class="absolute -left-[31px] top-1 bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                        <div class="font-bold text-slate-900">Fin Octobre 2025 — Dépose du Recours</div>
+                        <p class="text-sm text-stone-600 mt-1">Le Front Commun syndical et le BAPN attaquent la limitation des allocations à 24 mois devant la Cour constitutionnelle pour violation du principe de non-régression sociale.</p>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute -left-[31px] top-1 bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                        <div class="font-bold text-slate-900">10 Septembre 2026 — Décision de la Cour</div>
+                        <p class="text-sm text-stone-600 mt-1">La Cour valide le principe des 24 mois mais annule les mesures transitoires discriminatoires, jugeant illégale l'exclusion brutale des chômeurs anciens sans préavis adéquat.</p>
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute -left-[31px] top-1 bg-rose-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                        <div class="font-bold text-slate-900">Automne 2026 — Sursis pour 100.000 Travailleurs</div>
+                        <p class="text-sm text-stone-600 mt-1">L'ONEM est contraint d'accorder un sursis de 6 mois et de réexaminer les dossiers, évitant un basculement immédiat vers les CPAS avant la crise politique de novembre.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+                    <div class="text-rose-700 font-bold text-lg">Asymétrie de la Justice de Classe</div>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Alors qu'un recours citoyen ou syndical devant la Cour constitutionnelle nécessite près de 12 mois d'instruction, une requête unilatérale d'un emploieur devant un tribunal civil permet l'envoi d'huissiers et d'astreintes financières en quelques heures pour lever un piquet de grève.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-3">
+                    <div class="text-slate-900 font-bold text-lg">Arsenal Répressif & Loi Quintin</div>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Le durcissement du maintien de l'ordre (nasses policières illégales, canons à eau, drones) et le projet de loi « anti-casseurs » sont dénoncés par la Ligue des Droits Humains comme des menaces directes contre le droit de grève et d'association.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-sim" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span>🧮</span> Simulateur d'Impact Personnel & Communal
+                </h2>
+                <p class="text-stone-600 leading-relaxed">
+                    Expérimentez concrètement les conséquences des mesures de la coalition Arizona. Utilisez les deux outils interactifs ci-dessous pour calculer l'impact individuel du plafonnement de l'indexation sur votre salaire brut, ou pour simuler la charge financière reportée sur votre commune à la suite des exclusions de l'ONEM.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>💰</span> Calculateur de Saut d'Index (Arizona Capping)
+                    </h3>
+                    <p class="text-xs text-stone-500">Comparez le système historique avec le plafonnement Arizona (> 4.000 € brut).</p>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Salaire Mensuel Brut (€)</label>
+                            <input type="number" id="sim-salary" value="4800" min="2000" max="15000" step="100" class="w-full p-2 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Inflation Sectorielle Prévue (%)</label>
+                            <input type="number" id="sim-inflation" value="2.4" min="2.0" max="8.0" step="0.1" class="w-full p-2 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 outline-none">
+                        </div>
+                        <button onclick="calculateIndexLoss()" class="w-full py-2.5 bg-rose-700 text-white font-bold rounded-lg hover:bg-rose-800 transition text-sm">Calculer la Perte</button>
+                    </div>
+
+                    <div id="sim-result" class="p-4 bg-stone-50 rounded-xl border border-stone-200 hidden space-y-2 text-sm">
+                        <div class="flex justify-between border-b border-stone-200 pb-2">
+                            <span class="text-stone-600">Index Historique :</span>
+                            <span id="res-hist" class="font-bold text-slate-900">0 €</span>
+                        </div>
+                        <div class="flex justify-between border-b border-stone-200 pb-2">
+                            <span class="text-stone-600">Index Arizona :</span>
+                            <span id="res-arizona" class="font-bold text-amber-600">0 €</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-rose-700 pt-1">
+                            <span>Perte Mensuelle Brut :</span>
+                            <span id="res-loss">0 €</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-stone-500 pt-1">
+                            <span>Perte Annuelle (13,92 mois) :</span>
+                            <span id="res-annual-loss" class="font-bold">0 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>🏛️</span> Simulateur de Charge Communale CPAS
+                    </h3>
+                    <p class="text-xs text-stone-500">Estimez le coût net pour les fonds propres d'un CPAS local.</p>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Type de Bassin / Commune</label>
+                            <select id="sim-cpas-type" class="w-full p-2 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+                                <option value="large">Grande Métropole Industrielle (Charleroi, Liège)</option>
+                                <option value="medium">Ville Moyenne (Namur, Mons, Verviers)</option>
+                                <option value="small">Commune Régionale / Rurale</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Nombre d'Exclus ONEM basculant au RIS</label>
+                            <input type="number" id="sim-cpas-count" value="1200" min="50" max="10000" step="50" class="w-full p-2 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-slate-500 outline-none">
+                        </div>
+                        <button onclick="calculateCPASImpact()" class="w-full py-2.5 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 transition text-sm">Estimer le Déficit Net</button>
+                    </div>
+
+                    <div id="sim-cpas-result" class="p-4 bg-stone-50 rounded-xl border border-stone-200 hidden space-y-2 text-sm">
+                        <div class="flex justify-between border-b border-stone-200 pb-2">
+                            <span class="text-stone-600">Coût Annuel Bruts RIS :</span>
+                            <span id="res-cpas-gross" class="font-bold text-slate-900">0 €</span>
+                        </div>
+                        <div class="flex justify-between border-b border-stone-200 pb-2">
+                            <span class="text-stone-600">Remboursement Fédéral (80%) :</span>
+                            <span id="res-cpas-fed" class="font-bold text-emerald-700">0 €</span>
+                        </div>
+                        <div class="flex justify-between font-bold text-rose-700 pt-1">
+                            <span>Déficit Net Communal / An :</span>
+                            <span id="res-cpas-net">0 €</span>
+                        </div>
+                        <p class="text-xs text-stone-500 mt-2">N'inclut pas les frais de personnel d'encadrement administratif et d'enquêtes sociales (environ +15% de surcoût).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-stone-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Observatoire d'Analyse Sociale & Macroéconomique Belge • Synthèse Documentaire 2025-2026</p>
+            <p class="text-stone-500">Sources : ETUI, Bureau Fédéral du Plan, BNB, CRISP, UVCW, FGTB, CSC, CGSLB.</p>
+        </div>
+    </footer>
+
+    <script>
+        const partyData = [
+            {
+                party: "MR (Libéraux)",
+                badge: "bg-blue-100 text-blue-800",
+                veto: "Rejet catégorique de la hausse de TVA (21% → 22%) et de toute taxation du capital.",
+                concessions: "Acceptation marginale d'une taxe édulcorée sur les comptes-titres.",
+                impact: "Report massif de l'effort budgétaire sur les revenus du travail et la sécurité sociale."
+            },
+            {
+                party: "N-VA (Nationalistes)",
+                badge: "bg-amber-100 text-amber-900",
+                veto: "Exigence d'un effort minimum de 10 Mds €, ciblant les chômeurs et la santé.",
+                concessions: "Maintien partiel de l'indexation sous la pression de Vooruit.",
+                impact: "Pression déflationniste sévère sur les dépenses de l'État fédéral."
+            },
+            {
+                party: "Vooruit (Socialistes)",
+                badge: "bg-rose-100 text-rose-800",
+                veto: "Veto sur la suppression totale de l'indexation automatique et le statut BIM.",
+                concessions: "Acceptation du plafonnement de l'indexation au-delà de 4.000 € brut.",
+                impact: "Tentative d'atténuation des coupes sanitaires, provoquant l'ire des syndicats."
+            }
+        ];
+
+        function renderPartyTable(data) {
+            const tbody = document.getElementById('party-table-body');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-stone-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 border-b font-bold"><span class="px-2 py-1 rounded ${item.badge}">${item.party}</span></td>
+                    <td class="p-3 border-b text-stone-700">${item.veto}</td>
+                    <td class="p-3 border-b text-stone-600">${item.concessions}</td>
+                    <td class="p-3 border-b text-rose-700 font-medium">${item.impact}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterParty(partyKey) {
+            if (partyKey === 'all') {
+                renderPartyTable(partyData);
+            } else {
+                const filtered = partyData.filter(p => p.party.includes(partyKey));
+                renderPartyTable(filtered);
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('tab-active');
+
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 50);
+        }
+
+        function wrapLabel(str, maxLen) {
+            if (typeof str !== 'string') return str;
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(w => {
+                if ((currentLine + ' ' + w).trim().length > maxLen) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = w;
+                } else {
+                    currentLine += (currentLine ? ' ' : '') + w;
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        function initCharts() {
+            const ctxCpas = document.getElementById('cpasChart').getContext('2d');
+            new Chart(ctxCpas, {
+                type: 'bar',
+                data: {
+                    labels: ['2026', '2027', '2028', '2029'],
+                    datasets: [
+                        {
+                            label: 'Compensation Fédérale (M€)',
+                            data: [31, 137, 213, 250],
+                            backgroundColor: '#059669'
+                        },
+                        {
+                            label: 'Déficit Réel CPAS (M€)',
+                            data: [28, 114, 167, 184],
+                            backgroundColor: '#be123c'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) {
+                                    return c.dataset.label + ': ' + c.raw + ' M€';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { stacked: false },
+                        y: { 
+                            beginAtZero: true,
+                            title: { display: true, text: 'Millions d\'euros (€)' }
+                        }
+                    }
+                }
+            });
+
+            const ctxPension = document.getElementById('pensionChart').getContext('2d');
+            new Chart(ctxPension, {
+                type: 'bar',
+                data: {
+                    labels: ['Femmes', 'Hommes'],
+                    datasets: [{
+                        label: '% touché par le Malus Pension',
+                        data: [49, 21],
+                        backgroundColor: ['#be123c', '#475569']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) { return c.raw + ' % des départs en retraite'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            max: 60,
+                            title: { display: true, text: 'Pourcentage (%)' }
+                        }
+                    }
+                }
+            });
+
+            const ctxBudget = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctxBudget, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        wrapLabel('Taxe Millionnaires (>1M€)', 16),
+                        wrapLabel('Fin Niches Fiscales', 16),
+                        wrapLabel('Taxe Plus-Values', 16),
+                        wrapLabel('Lutte Fraude Fiscale', 16)
+                    ],
+                    datasets: [{
+                        data: [8, 5, 4, 4],
+                        backgroundColor: ['#be123c', '#d97706', '#2563eb', '#059669']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) { return c.label + ': ' + c.raw + ' Mds €'; }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const ctxWealth = document.getElementById('wealthChart').getContext('2d');
+            new Chart(ctxWealth, {
+                type: 'bar',
+                data: {
+                    labels: ['Top 1% Plus Riches', '50% Moins Riches'],
+                    datasets: [
+                        {
+                            label: 'Hausse Patrimoine (Mds €)',
+                            data: [22.0, 2.6],
+                            backgroundColor: '#0f172a'
+                        },
+                        {
+                            label: 'Pouvoir d\'Achat Réel (%)',
+                            data: [1.67, -0.54],
+                            backgroundColor: '#be123c'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: { beginAtZero: false }
+                    }
+                }
+            });
+
+            const ctxRegion = document.getElementById('regionChart').getContext('2d');
+            new Chart(ctxRegion, {
+                type: 'bar',
+                data: {
+                    labels: ['Wallonie', 'Bruxelles', 'Flandre'],
+                    datasets: [{
+                        label: 'Jours de grève / 1.000 salariés',
+                        data: [499, 456, 192],
+                        backgroundColor: ['#be123c', '#d97706', '#64748b']
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function calculateIndexLoss() {
+            const salary = parseFloat(document.getElementById('sim-salary').value) || 0;
+            const inflation = (parseFloat(document.getElementById('sim-inflation').value) || 0) / 100;
+
+            const histGain = salary * inflation;
+            
+            let arizonaGain = 0;
+            if (salary <= 4000) {
+                arizonaGain = salary * 0.02;
+            } else {
+                const basePart = 4000 * 0.02;
+                const excess = salary - 4000;
+                const excessRate = Math.max(0, inflation - 0.02);
+                arizonaGain = basePart + (excess * excessRate);
+            }
+
+            const monthlyLoss = Math.max(0, histGain - arizonaGain);
+            const annualLoss = monthlyLoss * 13.92;
+
+            document.getElementById('res-hist').innerText = histGain.toFixed(2) + ' €';
+            document.getElementById('res-arizona').innerText = arizonaGain.toFixed(2) + ' €';
+            document.getElementById('res-loss').innerText = '-' + monthlyLoss.toFixed(2) + ' €';
+            document.getElementById('res-annual-loss').innerText = '-' + annualLoss.toFixed(2) + ' €';
+
+            document.getElementById('sim-result').classList.remove('hidden');
+        }
+
+        function calculateCPASImpact() {
+            const count = parseInt(document.getElementById('sim-cpas-count').value) || 0;
+            const avgRISAnnual = 14500; // Average annual cost of RIS per head in EUR
+            
+            const grossCost = count * avgRISAnnual;
+            const fedReimbursement = grossCost * 0.80;
+            const netDeficit = grossCost - fedReimbursement;
+
+            document.getElementById('res-cpas-gross').innerText = (grossCost / 1000000).toFixed(2) + ' M€';
+            document.getElementById('res-cpas-fed').innerText = (fedReimbursement / 1000000).toFixed(2) + ' M€';
+            document.getElementById('res-cpas-net').innerText = '-' + (netDeficit / 1000000).toFixed(2) + ' M€';
+
+            document.getElementById('sim-cpas-result').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPartyTable(partyData);
+            initCharts();
+        });
+    </script>
+</body>
+</html>
